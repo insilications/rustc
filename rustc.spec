@@ -6,6 +6,11 @@ Source0  : https://static.rust-lang.org/dist/rust-1.3.0-x86_64-unknown-linux-gnu
 Summary  : Rust compiler
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause GPL-3.0 ISC MIT NCSA
+Provides : librustc_driver-198068b3
+Provides : librustdoc-198068b3
+Provides : libstd-198068b3
+
+
 
 %description
 Rust compiler
