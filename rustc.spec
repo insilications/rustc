@@ -1,8 +1,8 @@
 Name     : rustc
-Version  : 1.3.0
-Release  : 5
-URL      : https://static.rust-lang.org/dist/rust-1.3.0-x86_64-unknown-linux-gnu.tar.gz
-Source0  : https://static.rust-lang.org/dist/rust-1.3.0-x86_64-unknown-linux-gnu.tar.gz
+Version  : 1.4.0
+Release  : 6
+URL      : https://static.rust-lang.org/dist/rust-1.4.0-x86_64-unknown-linux-gnu.tar.gz
+Source0  : https://static.rust-lang.org/dist/rust-1.4.0-x86_64-unknown-linux-gnu.tar.gz
 Summary  : Rust compiler
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause GPL-3.0 ISC MIT NCSA
@@ -39,16 +39,16 @@ Rust compiler
 
 %package lib
 Summary: Rust compiler
-Group: Libraries
-Provides: librustc_driver-198068b3.so()(64bit)
-Provides: librustdoc-198068b3.so()(64bit)
-Provides: libstd-198068b3.so()(64bit)
+Group: Libraries%
+Provides: librustc_driver-1bf6e69c.so()(64bit)
+Provides: librustdoc-1bf6e69c.so()(64bit)
+Provides: libstd-1bf6e69c.so()(64bit)
 
 %description lib
 Rust compiler
 
 %prep
-%setup -q -n rust-1.3.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-1.4.0-x86_64-unknown-linux-gnu
 
 %install
 install -d %{buildroot}%{_bindir}
@@ -67,30 +67,30 @@ install rustc/bin/rustdoc %{buildroot}%{_bindir}/
 install rustc/share/man/man1/rustc.1 %{buildroot}%{_mandir}/man1/
 install rustc/share/man/man1/rustdoc.1 %{buildroot}%{_mandir}/man1/
 cp -a rustc/lib/rustlib %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libarena-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libflate-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libfmt_macros-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libgraphviz-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/liblog-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librbml-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_back-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_borrowck-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_data_structures-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_driver-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_lint-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_llvm-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_privacy-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_resolve-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_trans-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_typeck-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustdoc-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libserialize-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libstd-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libsyntax-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libterm-198068b3.so %{buildroot}%{_libdir}/
-ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libtest-198068b3.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libarena-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libflate-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libfmt_macros-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libgraphviz-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/liblog-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librbml-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_back-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_borrowck-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_data_structures-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_driver-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_lint-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_llvm-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_privacy-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_resolve-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_trans-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustc_typeck-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/librustdoc-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libserialize-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libstd-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libsyntax-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libterm-1bf6e69c.so %{buildroot}%{_libdir}/
+ln -s %{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/libtest-1bf6e69c.so %{buildroot}%{_libdir}/
 
 %files
 %defattr(-,root,root,-)
