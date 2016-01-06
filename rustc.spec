@@ -1,6 +1,6 @@
 Name     : rustc
 Version  : 1.5.0
-Release  : 7
+Release  : 8
 URL      : https://static.rust-lang.org/dist/rust-1.5.0-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-1.5.0-x86_64-unknown-linux-gnu.tar.gz
 Summary  : Rust compiler
@@ -52,11 +52,10 @@ Rust compiler
 
 %install
 install -d %{buildroot}%{_bindir}
-install -d %{buildroot}%{_datadir}
 install -d %{buildroot}%{_datadir}/bash-completion/completions
 install -d %{buildroot}%{_mandir}/man1
 install -d %{buildroot}%{_datadir}/zsh/site-functions
-install -d %{buildroot}%{_libdir}
+install -d %{buildroot}%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib
 install -d %{buildroot}%{_prefix}/lib
 install cargo/bin/cargo %{buildroot}%{_bindir}/
 install cargo/etc/bash_completion.d/cargo %{buildroot}%{_datadir}/bash-completion/completions/
@@ -69,7 +68,8 @@ install rustc/share/man/man1/rustc.1 %{buildroot}%{_mandir}/man1/
 install rustc/share/man/man1/rustdoc.1 %{buildroot}%{_mandir}/man1/
 # Location is for rust-gdb to set path of python scripts
 cp -a rustc/lib/rustlib %{buildroot}%{_prefix}/lib/
-cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}%{_libdir}/
+cp -a rustc/lib/*.so %{buildroot}%{_libdir}/
+cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/
 
 %files
 %defattr(-,root,root,-)
@@ -91,7 +91,8 @@ cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib
 
 %files lib
 %defattr(-,root,root,-)
-%{_libdir}/*.a
-%{_libdir}/*.rlib
 %{_libdir}/*.so
+%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/*.a
+%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
+%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/*.so
 %{_prefix}/lib/rustlib/etc/*.py
