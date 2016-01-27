@@ -1,8 +1,8 @@
 Name     : rustc
-Version  : 1.5.0
+Version  : 1.6.0
 Release  : 8
-URL      : https://static.rust-lang.org/dist/rust-1.5.0-x86_64-unknown-linux-gnu.tar.gz
-Source0  : https://static.rust-lang.org/dist/rust-1.5.0-x86_64-unknown-linux-gnu.tar.gz
+URL      : https://static.rust-lang.org/dist/rust-1.6.0-x86_64-unknown-linux-gnu.tar.gz
+Source0  : https://static.rust-lang.org/dist/rust-1.6.0-x86_64-unknown-linux-gnu.tar.gz
 Summary  : Rust compiler
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause GPL-3.0 ISC MIT NCSA
@@ -40,15 +40,15 @@ Rust compiler
 %package lib
 Summary: Rust compiler
 Group: Libraries%
-Provides: librustc_driver-35c36e89.so()(64bit)
-Provides: librustdoc-35c36e89.so()(64bit)
-Provides: libstd-35c36e89.so()(64bit)
+Provides: librustc_driver-ca9f0d77.so()(64bit)
+Provides: librustdoc-ca9f0d77.so()(64bit)
+Provides: libstd-ca9f0d77.so()(64bit)
 
 %description lib
 Rust compiler
 
 %prep
-%setup -q -n rust-1.5.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-1.6.0-x86_64-unknown-linux-gnu
 
 %install
 install -d %{buildroot}%{_bindir}
