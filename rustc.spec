@@ -1,6 +1,6 @@
 Name     : rustc
 Version  : 1.8.0
-Release  : 11
+Release  : 12
 URL      : https://static.rust-lang.org/dist/rust-1.8.0-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-1.8.0-x86_64-unknown-linux-gnu.tar.gz
 Summary  : Rust compiler
