@@ -10,7 +10,7 @@
 
 Name:           rustc
 Version:        1.17.0
-Release:        20
+Release:        21
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -115,7 +115,7 @@ export RUSTFLAGS="%{rustflags}"
 %global rustlibdir %{common_libdir}/rustlib
 
 %configure --disable-option-checking \
-  --libdir=%{common_libdir} \
+  --libdir=/usr/lib64 \
   --build=%{rust_triple} --host=%{rust_triple} --target=%{rust_triple} \
   --enable-local-rust --local-rust-root=%{local_rust_root} \
   --llvm-root=/usr --disable-codegen-tests \
@@ -144,10 +144,10 @@ DESTDIR=%{buildroot} ./x.py dist --install
 # rm -v %{buildroot}%{common_libdir}/*.so
 
 # Remove installer artifacts (manifests, uninstall scripts, etc.)
-find %{buildroot}%{rustlibdir} -maxdepth 1 -type f -exec rm -v '{}' '+'
+find %{buildroot}/usr/lib64/rustlib -maxdepth 1 -type f -exec rm -v '{}' '+'
 
 # The shared libraries should be executable for debuginfo extraction.
-find %{buildroot}%{rustlibdir}/ -type f -name '*.so' -exec chmod -v +x '{}' '+'
+find %{buildroot}/usr/lib64/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}' '+'
 
 # FIXME: __os_install_post will strip the rlibs
 # -- should we find a way to preserve debuginfo?
@@ -167,11 +167,11 @@ export RUSTFLAGS="%{rustflags}"
 /usr/bin/rust-lldb
 /usr/bin/rustc
 /usr/bin/rustdoc
-/usr/lib/*.so
-/usr/lib/rustlib/etc/*.py
-%exclude /usr/lib/rustlib/etc/*.pyc
-%exclude /usr/lib/rustlib/etc/*.pyo
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
+/usr/lib64/*.so
+/usr/lib64/rustlib/etc/*.py
+%exclude /usr/lib64/rustlib/etc/*.pyc
+%exclude /usr/lib64/rustlib/etc/*.pyo
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
 /usr/share/man/man1/rustc.1
 /usr/share/man/man1/rustdoc.1
