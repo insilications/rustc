@@ -10,7 +10,7 @@
 
 Name:           rustc
 Version:        1.17.0
-Release:        19
+Release:        20
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
