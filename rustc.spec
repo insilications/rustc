@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.17.0
-Release:        22
+Release:        23
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -27,6 +27,7 @@ BuildRequires:  cargo >= 0.17.0
 BuildRequires:  %{name} >= 0.16.0
 BuildRequires:  make
 BuildRequires:  gcc
+BuildRequires:  gcc-dev
 BuildRequires:  ncurses-dev
 BuildRequires:  zlib-dev
 BuildRequires:  python
@@ -44,11 +45,10 @@ Provides:       bundled(hoedown) = 3.0.5
 Provides:       bundled(jquery) = 2.1.4
 Provides:       bundled(libbacktrace) = 6.1.0
 Provides:       bundled(miniz) = 1.14
-# The C compiler is needed at runtime just for linking.  Someday rustc might
-# invoke the linker directly, and then we'll only need binutils.
-# https://github.com/rust-lang/rust/issues/11937
-Requires:       gcc
 
+Requires:       binutils
+Requires:       gcc
+Requires:       gcc-dev
 
 
 %description
