@@ -15,16 +15,16 @@
 %global rustflags -Clink-arg=-Wl,-z,relro,-z,now
 
 Name:           rustc
-Version:        1.17.0
-Release:        24
+Version:        1.18.0
+Release:        25
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rustc-1.17.0-src.tar.gz
+Source0:        https://static.rust-lang.org/dist/rustc-%{version}-src.tar.gz
 Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
 
-BuildRequires:  cargo >= 0.17.0
-BuildRequires:  %{name} >= 0.16.0
+BuildRequires:  cargo >= 0.18.0
+BuildRequires:  %{name} >= 0.17.0
 BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  gcc-dev
@@ -58,7 +58,7 @@ segfaults, and guarantees thread safety.
 
 %prep
 
-%setup -q -n rustc-1.17.0-src
+%setup -q -n rustc-%{version}-src
 
 %patch1 -p1
 
@@ -90,7 +90,7 @@ export RUSTFLAGS="%{rustflags}"
   --enable-vendor \
   --release-channel=stable
 
-./x.py dist --verbose
+./x.py dist
 
 %install
 export RUSTFLAGS="%{rustflags}"
