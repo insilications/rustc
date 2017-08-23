@@ -1,6 +1,6 @@
-From 2290f80d05b7f314f573a8be856b491f33cbec96 Mon Sep 17 00:00:00 2001
-From: William Douglas <william.r.douglas@gmail.com>
-Date: Wed, 3 May 2017 00:03:52 +0000
+From 871bf068122d05ad23ca059c165038f7c59313a0 Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Wed, 23 Aug 2017 18:22:35 +0000
 Subject: [PATCH] Update stage0-sysroot incremental lib directory
 
 Since Clear Linux uses /usr/lib64 as its libdir path, the bootstrap
@@ -13,10 +13,10 @@ path to lib64 instead.
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 9119b00..a8c9ea5 100644
+index 6d696df..d703ee9 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
-@@ -288,9 +288,9 @@ pub fn std(build: &Build, compiler: &Compiler, target: &str) {
+@@ -413,9 +413,9 @@ pub fn std(build: &Build, compiler: &Compiler, target: &str) {
      let image = tmpdir(build).join(format!("{}-{}-image", name, target));
      let _ = fs::remove_dir_all(&image);
  
@@ -27,12 +27,12 @@ index 9119b00..a8c9ea5 100644
 +    let src = build.sysroot(compiler).join("lib64/rustlib");
      cp_r(&src.join(target), &dst);
  
-     let mut cmd = Command::new(SH_CMD);
+     let mut cmd = rust_installer(build);
 diff --git a/src/bootstrap/lib.rs b/src/bootstrap/lib.rs
-index 39cfdfd..7927c08 100644
+index 00cbc58..39945a3 100644
 --- a/src/bootstrap/lib.rs
 +++ b/src/bootstrap/lib.rs
-@@ -671,7 +671,7 @@ impl Build {
+@@ -635,7 +635,7 @@ impl Build {
      /// Returns the libdir where the standard library and other artifacts are
      /// found for a compiler's sysroot.
      fn sysroot_libdir(&self, compiler: &Compiler, target: &str) -> PathBuf {
@@ -42,5 +42,5 @@ index 39cfdfd..7927c08 100644
      }
  
 -- 
-2.12.2
+2.14.1
 

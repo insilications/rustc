@@ -15,12 +15,12 @@
 %global rustflags -Clink-arg=-Wl,-z,relro,-z,now
 
 Name:           rustc
-Version:        1.18.0
-Release:        26
+Version:        1.19.0
+Release:        27
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rustc-1.18.0-src.tar.gz
+Source0:        https://static.rust-lang.org/dist/rustc-1.19.0-src.tar.gz
 Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
 
 BuildRequires:  cargo >= 0.18.0
