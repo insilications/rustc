@@ -73,37 +73,40 @@ sed -i.jemalloc -e '1i // ignore-test jemalloc is disabled' \
   src/test/compile-fail/allocator-rust-dylib-is-jemalloc.rs \
   src/test/run-pass/allocator-default.rs
 
+# The configure macro will modify some autoconf-related files, which upsets
+# cargo when it tries to verify checksums in those files.  If we just truncate
+# that file list, cargo won't have anything to complain about.
+find src/vendor -name .cargo-checksum.json \
+  -exec sed -i.uncheck -e 's/"files":{[^}]*}/"files":{ }/' '{}' '+'
+
 %build
 export RUSTFLAGS="%{rustflags}"
 
 # We're going to override --libdir when configuring to get rustlib into a
 # common path, but we'll fix the shared libraries during install.
-%configure --disable-option-checking \
-  --libdir=/usr/lib64 \
-  --build=%{rust_triple} --host=%{rust_triple} --target=%{rust_triple} \
-  --enable-local-rust --local-rust-root=/usr \
-  --llvm-root=/usr --disable-codegen-tests \
-  --enable-llvm-link-shared \
-  --disable-jemalloc \
-  --disable-rpath \
-  --enable-debuginfo \
-  --enable-vendor \
-  --release-channel=stable
+%configure \
+    --build=%{rust_triple} \
+    --host=%{rust_triple} \
+    --target=%{rust_triple} \
+    --disable-option-checking \
+    --libdir=/usr/lib64 \
+    --enable-local-rust \
+    --local-rust-root=/usr \
+    --llvm-root=/usr \
+    --disable-codegen-tests \
+    --enable-llvm-link-shared \
+    --disable-jemalloc \
+    --disable-rpath \
+    --enable-debuginfo \
+    --enable-vendor \
+    --release-channel=stable
 
-./x.py dist
+./x.py build
 
 %install
 export RUSTFLAGS="%{rustflags}"
 
-DESTDIR=%{buildroot} ./x.py dist --install
-
-# The libdir libraries are identical to those under rustlib/, and we need
-# the latter in place to support dynamic linking for compiler plugins, so we'll
-# point ldconfig to rustlib/ and remove the former.
-#%global rust_ldconfig %{_sysconfdir}/ld.so.conf.d/rust-%{_arch}.conf
-#mkdir -p %{buildroot}$(dirname %{rust_ldconfig})
-#echo "%{rustlibdir}/%{rust_triple}/lib" > %{buildroot}%{rust_ldconfig}
-#rm -v %{buildroot}%{common_libdir}/*.so
+DESTDIR=%{buildroot} ./x.py install
 
 # Remove installer artifacts (manifests, uninstall scripts, etc.)
 find %{buildroot}/usr/lib64/rustlib -maxdepth 1 -type f -exec rm -v '{}' '+'
@@ -118,7 +121,6 @@ find %{buildroot}/usr/lib64/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}'
 rm -fr %{buildroot}/usr/share/doc
 
 %check
-%{?cmake_path:export PATH=%{cmake_path}:$PATH}
 export RUSTFLAGS="%{rustflags}"
 
 # The results are not stable on koji, so mask errors and just log it.
