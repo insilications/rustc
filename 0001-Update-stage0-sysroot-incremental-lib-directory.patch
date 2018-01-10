@@ -1,6 +1,6 @@
-From 9e3dea078a0d9aa09c1d350f29f48631ca2b1e95 Mon Sep 17 00:00:00 2001
+From 2242c1d2087cc6a172a10431e37fd8cd97900fee Mon Sep 17 00:00:00 2001
 From: William Douglas <william.douglas@intel.com>
-Date: Wed, 6 Sep 2017 21:50:09 +0000
+Date: Wed, 10 Jan 2018 20:40:17 +0000
 Subject: [PATCH] Update stage0-sysroot incremental lib directory
 
 Since Clear Linux uses /usr/lib64 as its libdir path, the bootstrap
@@ -9,62 +9,62 @@ incremental lib directory in lib64 instead of lib. This patch fixes the
 path to lib64 instead.
 ---
  src/bootstrap/dist.rs | 8 ++++----
- src/bootstrap/lib.rs  | 2 +-
+ src/bootstrap/util.rs | 2 +-
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 807e878..f7b4a97 100644
+index 65a59d7..d5fc587 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
-@@ -356,7 +356,7 @@ pub fn rustc(build: &Build, stage: u32, host: &str) {
- pub fn debugger_scripts(build: &Build,
-                         sysroot: &Path,
-                         host: &str) {
--    let dst = sysroot.join("lib/rustlib/etc");
-+    let dst = sysroot.join("lib64/rustlib/etc");
-     t!(fs::create_dir_all(&dst));
-     let cp_debugger_script = |file: &str| {
-         install(&build.src.join("src/etc/").join(file), &dst, 0o644);
-@@ -403,7 +403,7 @@ pub fn std(build: &Build, compiler: &Compiler, target: &str) {
-     let image = tmpdir(build).join(format!("{}-{}-image", name, target));
-     let _ = fs::remove_dir_all(&image);
+@@ -474,7 +474,7 @@ impl Step for DebuggerScripts {
+         let build = builder.build;
+         let host = self.host;
+         let sysroot = self.sysroot;
+-        let dst = sysroot.join("lib/rustlib/etc");
++        let dst = sysroot.join("lib64/rustlib/etc");
+         t!(fs::create_dir_all(&dst));
+         let cp_debugger_script = |file: &str| {
+             install(&build.src.join("src/etc/").join(file), &dst, 0o644);
+@@ -554,7 +554,7 @@ impl Step for Std {
+         let image = tmpdir(build).join(format!("{}-{}-image", name, target));
+         let _ = fs::remove_dir_all(&image);
  
--    let dst = image.join("lib/rustlib").join(target);
-+    let dst = image.join("lib64/rustlib").join(target);
-     t!(fs::create_dir_all(&dst));
-     let mut src = build.sysroot_libdir(compiler, target);
-     src.pop(); // Remove the trailing /lib folder from the sysroot_libdir
-@@ -460,7 +460,7 @@ pub fn analysis(build: &Build, compiler: &Compiler, target: &str) {
-     let src = build.stage_out(&compiler, Mode::Libstd).join(target).join("release").join("deps");
+-        let dst = image.join("lib/rustlib").join(target);
++        let dst = image.join("lib64/rustlib").join(target);
+         t!(fs::create_dir_all(&dst));
+         let mut src = builder.sysroot_libdir(compiler, target).to_path_buf();
+         src.pop(); // Remove the trailing /lib folder from the sysroot_libdir
+@@ -630,7 +630,7 @@ impl Step for Analysis {
+             .join(target).join("release").join("deps");
  
-     let image_src = src.join("save-analysis");
--    let dst = image.join("lib/rustlib").join(target).join("analysis");
-+    let dst = image.join("lib64/rustlib").join(target).join("analysis");
-     t!(fs::create_dir_all(&dst));
-     println!("image_src: {:?}, dst: {:?}", image_src, dst);
-     cp_r(&image_src, &dst);
-@@ -528,7 +528,7 @@ pub fn rust_src(build: &Build) {
-     let image = tmpdir(build).join(format!("{}-image", name));
-     let _ = fs::remove_dir_all(&image);
+         let image_src = src.join("save-analysis");
+-        let dst = image.join("lib/rustlib").join(target).join("analysis");
++        let dst = image.join("lib64/rustlib").join(target).join("analysis");
+         t!(fs::create_dir_all(&dst));
+         println!("image_src: {:?}, dst: {:?}", image_src, dst);
+         cp_r(&image_src, &dst);
+@@ -720,7 +720,7 @@ impl Step for Src {
+         let image = tmpdir(build).join(format!("{}-image", name));
+         let _ = fs::remove_dir_all(&image);
  
--    let dst = image.join("lib/rustlib/src");
-+    let dst = image.join("lib64/rustlib/src");
-     let dst_src = dst.join("rust");
-     t!(fs::create_dir_all(&dst_src));
+-        let dst = image.join("lib/rustlib/src");
++        let dst = image.join("lib64/rustlib/src");
+         let dst_src = dst.join("rust");
+         t!(fs::create_dir_all(&dst_src));
  
-diff --git a/src/bootstrap/lib.rs b/src/bootstrap/lib.rs
-index 0322315..9690f4a 100644
---- a/src/bootstrap/lib.rs
-+++ b/src/bootstrap/lib.rs
-@@ -651,7 +651,7 @@ impl Build {
-                     .join("rustlib").join(target).join("lib")
-             }
-         }
--       self.sysroot(compiler).join("lib").join("rustlib")
-+       self.sysroot(compiler).join("lib64").join("rustlib")
-            .join(target).join("lib")
-     }
+diff --git a/src/bootstrap/util.rs b/src/bootstrap/util.rs
+index 092fb04..92a881e 100644
+--- a/src/bootstrap/util.rs
++++ b/src/bootstrap/util.rs
+@@ -112,7 +112,7 @@ pub fn is_dylib(name: &str) -> bool {
+ /// Returns the corresponding relative library directory that the compiler's
+ /// dylibs will be found in.
+ pub fn libdir(target: &str) -> &'static str {
+-    if target.contains("windows") {"bin"} else {"lib"}
++    if target.contains("windows") {"bin"} else {"lib64"}
+ }
  
+ /// Adds a list of lookup paths to `cmd`'s dynamic library lookup path.
 -- 
-2.14.1
+2.15.1
 
