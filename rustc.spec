@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.25.0
-Release:        36
+Release:        37
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -84,22 +84,23 @@ segfaults, and guarantees thread safety.
 # # Remove unwanted documentation files
 # rm -fr %{buildroot}/usr/share/doc
 
-install -d %{buildroot}%{_bindir}
-install -d %{buildroot}%{_datadir}/bash-completion/completions
-install -d %{buildroot}%{_mandir}/man1
-install -d %{buildroot}%{_datadir}/zsh/site-functions
-install -d %{buildroot}%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib
-install -d %{buildroot}%{_prefix}/lib
-install rustc/bin/rust-gdb %{buildroot}%{_bindir}/
-install rustc/bin/rust-lldb %{buildroot}%{_bindir}/
-install rustc/bin/rustc %{buildroot}%{_bindir}/
-install rustc/bin/rustdoc %{buildroot}%{_bindir}/
-install rustc/share/man/man1/rustc.1 %{buildroot}%{_mandir}/man1/
-install rustc/share/man/man1/rustdoc.1 %{buildroot}%{_mandir}/man1/
+install -d %{buildroot}/usr/bin
+install -d %{buildroot}/usr/share/bash-completion/completions
+install -d %{buildroot}/usr/share/man/man1
+install -d %{buildroot}/usr/share/zsh/site-functions
+install -d %{buildroot}/usr/lib/rustlib
+install -d %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib
+install rustc/bin/rust-gdb %{buildroot}/usr/bin
+install rustc/bin/rust-lldb %{buildroot}/usr/bin
+install rustc/bin/rustc %{buildroot}/usr/bin
+install rustc/bin/rustdoc %{buildroot}/usr/bin
+install rustc/share/man/man1/rustc.1 %{buildroot}/usr/share/man/man1
+install rustc/share/man/man1/rustdoc.1 %{buildroot}/usr/share/man/man1
 # Location is for rust-gdb to set path of python scripts
-cp -a rustc/lib/rustlib %{buildroot}%{_prefix}/lib/
-cp -a rustc/lib/*.so %{buildroot}%{_libdir}/
-cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}%{_libdir}/rustlib/x86_64-unknown-linux-gnu/lib/
+cp -a rustc/lib/rustlib/etc %{buildroot}/usr/lib/rustlib
+cp -a rustc/lib/rustlib/x86_64-unknown-linux-gnu %{buildroot}/usr/lib64/rustlib
+cp -a rustc/lib/*.so %{buildroot}/usr/lib64
+cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/
 
 %files
 /usr/bin/rust-gdb
@@ -112,6 +113,6 @@ cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib
 %exclude /usr/lib/rustlib/etc/__pycache__/
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
 /usr/share/man/man1/rustc.1
 /usr/share/man/man1/rustdoc.1
