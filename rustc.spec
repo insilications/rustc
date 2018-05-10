@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.25.0
-Release:        37
+Release:        38
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
