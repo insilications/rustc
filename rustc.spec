@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.25.0
-Release:        38
+Release:        39
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -101,6 +101,8 @@ cp -a rustc/lib/rustlib/etc %{buildroot}/usr/lib/rustlib
 cp -a rustc/lib/rustlib/x86_64-unknown-linux-gnu %{buildroot}/usr/lib64/rustlib
 cp -a rustc/lib/*.so %{buildroot}/usr/lib64
 cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/
+
+chmod a-x %{buildroot}/usr/share/man/man1/*
 
 %files
 /usr/bin/rust-gdb
