@@ -15,12 +15,12 @@
 %global rustflags -Clink-arg=-Wl,-z,relro,-z,now
 
 Name:           rustc
-Version:        1.25.0
-Release:        39
+Version:        1.27.0
+Release:        40
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.25.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.27.0-x86_64-unknown-linux-gnu.tar.gz
 #Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
 
 BuildRequires:  cargo >= 0.18.0
@@ -65,7 +65,7 @@ segfaults, and guarantees thread safety.
 
 #%patch1 -p1
 
-%setup -q -n rust-1.25.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-1.27.0-x86_64-unknown-linux-gnu
 
 %install
 # export RUSTFLAGS="%{rustflags}"
@@ -111,8 +111,7 @@ chmod a-x %{buildroot}/usr/share/man/man1/*
 /usr/bin/rustdoc
 /usr/lib64/*.so
 /usr/lib/rustlib/etc/*.py
-%exclude /usr/lib/rustlib/etc/*.pyc
-%exclude /usr/lib/rustlib/etc/__pycache__/
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/lld
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
