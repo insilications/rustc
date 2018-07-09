@@ -1,0 +1,2 @@
+Updating rustc:
+- Check out https://src.fedoraproject.org/cgit/rpms/rust.git/tree/rust.spec for potential hickups in building
