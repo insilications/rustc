@@ -16,12 +16,12 @@
 
 Name:           rustc
 Version:        1.27.0
-Release:        40
+Release:        41
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.27.0-x86_64-unknown-linux-gnu.tar.gz
-#Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
+Source0:        https://static.rust-lang.org/dist/rustc-1.27.0-src.tar.gz
+Patch1:         0001-Fix-new-renamed_and_removed_lints-warning-247.patch
 
 BuildRequires:  cargo >= 0.18.0
 BuildRequires:  %{name} >= 0.17.0
@@ -30,7 +30,7 @@ BuildRequires:  gcc
 BuildRequires:  gcc-dev
 BuildRequires:  ncurses-dev
 BuildRequires:  zlib-dev
-BuildRequires:  python
+BuildRequires:  python3
 BuildRequires:  curl
 BuildRequires:  llvm-dev >= 3.7
 
@@ -41,13 +41,8 @@ BuildRequires:  procps-ng
 BuildRequires:  gdb
 
 # TODO: work on unbundling these!
-# Provides:       bundled(hoedown) = 3.0.5
-# Provides:       bundled(jquery) = 2.1.4
-# Provides:       bundled(libbacktrace) = 6.1.0
-# Provides:       bundled(miniz) = 1.14
-#Provides: librustc_driver-d16b8f0e.so()(64bit)
-#Provides: librustdoc-d16b8f0e.so()(64bit)
-#Provides: libstd-d16b8f0e.so()(64bit)
+Provides:       bundled(libbacktrace) = 6.1.0
+Provides:       bundled(miniz) = 1.16~beta+r1
 
 Requires:       binutils
 Requires:       gcc
@@ -61,59 +56,64 @@ segfaults, and guarantees thread safety.
 
 %prep
 
-#%setup -q -n rustc-%{version}-src
+%setup -q -n rustc-%{version}-src
 
-#%patch1 -p1
+pushd src/vendor/error-chain
+%patch1 -p1
+popd
 
-%setup -q -n rust-1.27.0-x86_64-unknown-linux-gnu
+%build
+%configure \
+    --build=%{rust_triple} \
+    --host=%{rust_triple} \
+    --target=%{rust_triple} \
+    --disable-option-checking \
+    --libdir=/usr/lib \
+    --enable-local-rust \
+    --local-rust-root=/usr \
+    --llvm-root=/usr \
+    --disable-codegen-tests \
+    --enable-llvm-link-shared \
+    --disable-jemalloc \
+    --disable-rpath \
+    --enable-debuginfo \
+    --enable-vendor \
+    --release-channel=stable
+
+# The configure macro will modify some autoconf-related files, which upsets
+# cargo when it tries to verify checksums in those files.  If we just truncate
+# that file list, cargo won't have anything to complain about.
+find src/vendor -name .cargo-checksum.json \
+     -exec sed -i.uncheck -e 's/"files":{[^}]*}/"files":{ }/' '{}' '+'
+
+python3 x.py build
 
 %install
-# export RUSTFLAGS="%{rustflags}"
+export RUSTFLAGS="%{rustflags}"
 
-# DESTDIR=%{buildroot} ./x.py install
+DESTDIR=%{buildroot} python3 x.py install
 
 # # Remove installer artifacts (manifests, uninstall scripts, etc.)
-# find %{buildroot}/usr/lib64/rustlib -maxdepth 1 -type f -exec rm -v '{}' '+'
+find %{buildroot}/usr/lib/rustlib -maxdepth 1 -type f -exec rm -v '{}' '+'
 
 # # The shared libraries should be executable for debuginfo extraction.
-# find %{buildroot}/usr/lib64/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}' '+'
+find %{buildroot}/usr/lib/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}' '+'
 
 # # FIXME: __os_install_post will strip the rlibs
 # # -- should we find a way to preserve debuginfo?
 
 # # Remove unwanted documentation files
-# rm -fr %{buildroot}/usr/share/doc
-
-install -d %{buildroot}/usr/bin
-install -d %{buildroot}/usr/share/bash-completion/completions
-install -d %{buildroot}/usr/share/man/man1
-install -d %{buildroot}/usr/share/zsh/site-functions
-install -d %{buildroot}/usr/lib/rustlib
-install -d %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib
-install rustc/bin/rust-gdb %{buildroot}/usr/bin
-install rustc/bin/rust-lldb %{buildroot}/usr/bin
-install rustc/bin/rustc %{buildroot}/usr/bin
-install rustc/bin/rustdoc %{buildroot}/usr/bin
-install rustc/share/man/man1/rustc.1 %{buildroot}/usr/share/man/man1
-install rustc/share/man/man1/rustdoc.1 %{buildroot}/usr/share/man/man1
-# Location is for rust-gdb to set path of python scripts
-cp -a rustc/lib/rustlib/etc %{buildroot}/usr/lib/rustlib
-cp -a rustc/lib/rustlib/x86_64-unknown-linux-gnu %{buildroot}/usr/lib64/rustlib
-cp -a rustc/lib/*.so %{buildroot}/usr/lib64
-cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/
-
-chmod a-x %{buildroot}/usr/share/man/man1/*
+rm -fr %{buildroot}/usr/share/doc
 
 %files
 /usr/bin/rust-gdb
 /usr/bin/rust-lldb
 /usr/bin/rustc
 /usr/bin/rustdoc
-/usr/lib64/*.so
+/usr/lib/*.so
 /usr/lib/rustlib/etc/*.py
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/lld
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
 /usr/share/man/man1/rustc.1
 /usr/share/man/man1/rustdoc.1
