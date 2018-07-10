@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.27.0
-Release:        41
+Release:        42
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -42,7 +42,7 @@ BuildRequires:  gdb
 
 # TODO: work on unbundling these!
 Provides:       bundled(libbacktrace) = 6.1.0
-Provides:       bundled(miniz) = 1.16~beta+r1
+Provides:       bundled(miniz) = 1.16beta+r1
 
 Requires:       binutils
 Requires:       gcc
