@@ -16,7 +16,7 @@
 
 Name:           rustc
 Version:        1.27.0
-Release:        42
+Release:        43
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -104,12 +104,15 @@ find %{buildroot}/usr/lib/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}' '
 
 # # Remove unwanted documentation files
 rm -fr %{buildroot}/usr/share/doc
+mkdir -p %{buildroot}/usr/lib64
+cp %{buildroot}/usr/lib/*.so %{buildroot}/usr/lib64
 
 %files
 /usr/bin/rust-gdb
 /usr/bin/rust-lldb
 /usr/bin/rustc
 /usr/bin/rustdoc
+/usr/lib64/*.so
 /usr/lib/*.so
 /usr/lib/rustlib/etc/*.py
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
