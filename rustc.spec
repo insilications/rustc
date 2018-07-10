@@ -1,30 +1,15 @@
-%global rust_triple x86_64-unknown-linux-gnu
-
-# ALL Rust libraries are private, because they don't keep an ABI.
-%global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
-%global __provides_exclude ^(%{_privatelibs})$
-%global __requires_exclude ^(%{_privatelibs})$
-
-# While we don't want to encourage dynamic linking to Rust shared libraries, as
-# there's no stable ABI, we still need the unallocated metadata (.rustc) to
-# support custom-derive plugins like #[proc_macro_derive(Foo)].  But eu-strip is
-# very eager by default, so we have to limit it to -g, only debugging symbols.
-%global _find_debuginfo_opts -g
-
-# Use hardening ldflags.
-%global rustflags -Clink-arg=-Wl,-z,relro,-z,now
-
 Name:           rustc
 Version:        1.27.0
-Release:        43
+Release:        44
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
 Source0:        https://static.rust-lang.org/dist/rustc-1.27.0-src.tar.gz
 Patch1:         0001-Fix-new-renamed_and_removed_lints-warning-247.patch
+AutoReqProv:    No
 
 BuildRequires:  cargo >= 0.18.0
-BuildRequires:  %{name} >= 0.17.0
+BuildRequires:  rustc >= 0.17.0
 BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  gcc-dev
@@ -48,6 +33,7 @@ Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
+Requires:       llvm
 
 
 %description
@@ -64,9 +50,9 @@ popd
 
 %build
 %configure \
-    --build=%{rust_triple} \
-    --host=%{rust_triple} \
-    --target=%{rust_triple} \
+    --build=x86_64-unknown-linux-gnu \
+    --host=x86_64-unknown-linux-gnu \
+    --target=x86_64-unknown-linux-gnu \
     --disable-option-checking \
     --libdir=/usr/lib \
     --enable-local-rust \
@@ -89,7 +75,7 @@ find src/vendor -name .cargo-checksum.json \
 python3 x.py build
 
 %install
-export RUSTFLAGS="%{rustflags}"
+export RUSTFLAGS="-Clink-arg=-Wl,-z,relro,-z,now"
 
 DESTDIR=%{buildroot} python3 x.py install
 
@@ -105,7 +91,9 @@ find %{buildroot}/usr/lib/rustlib/ -type f -name '*.so' -exec chmod -v +x '{}' '
 # # Remove unwanted documentation files
 rm -fr %{buildroot}/usr/share/doc
 mkdir -p %{buildroot}/usr/lib64
-cp %{buildroot}/usr/lib/*.so %{buildroot}/usr/lib64
+mv %{buildroot}/usr/lib/*.so %{buildroot}/usr/lib64
+mkdir -p %{buildroot}/usr/lib64/rustlib
+mv %{buildroot}/usr/lib/rustlib/x86_64-unknown-linux-gnu %{buildroot}/usr/lib64/rustlib
 
 %files
 /usr/bin/rust-gdb
@@ -113,10 +101,9 @@ cp %{buildroot}/usr/lib/*.so %{buildroot}/usr/lib64
 /usr/bin/rustc
 /usr/bin/rustdoc
 /usr/lib64/*.so
-/usr/lib/*.so
 /usr/lib/rustlib/etc/*.py
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
 /usr/share/man/man1/rustc.1
 /usr/share/man/man1/rustdoc.1
