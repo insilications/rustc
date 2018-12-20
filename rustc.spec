@@ -15,12 +15,12 @@
 %global rustflags -Clink-arg=-Wl,-z,relro,-z,now
 
 Name:           rustc
-Version:        1.28.0
-Release:        50
+Version:        1.31.1
+Release:        51
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.28.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.31.1-x86_64-unknown-linux-gnu.tar.gz
 #Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
 
 BuildRequires:  cargo >= 0.18.0
@@ -53,6 +53,8 @@ Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
+Provides:       libLLVM-8svn.so()(64bit)
+Provides:       libLLVM-8svn.so(LLVM_8)(64bit)
 
 
 %description
@@ -65,7 +67,7 @@ segfaults, and guarantees thread safety.
 
 #%patch1 -p1
 
-%setup -q -n rust-1.28.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-1.31.1-x86_64-unknown-linux-gnu
 
 %install
 # export RUSTFLAGS="%{rustflags}"
@@ -86,6 +88,7 @@ segfaults, and guarantees thread safety.
 
 install -d %{buildroot}/usr/bin
 install -d %{buildroot}/usr/share/bash-completion/completions
+install -d %{buildroot}/usr/share/package-licenses/
 install -d %{buildroot}/usr/share/man/man1
 install -d %{buildroot}/usr/share/zsh/site-functions
 install -d %{buildroot}/usr/lib/rustlib
@@ -100,9 +103,11 @@ install rustc/share/man/man1/rustdoc.1 %{buildroot}/usr/share/man/man1
 cp -a rustc/lib/rustlib/etc %{buildroot}/usr/lib/rustlib
 cp -a rustc/lib/rustlib/x86_64-unknown-linux-gnu %{buildroot}/usr/lib64/rustlib
 cp -a rustc/lib/*.so %{buildroot}/usr/lib64
+cp -a rustc/share/doc/rust %{buildroot}/usr/share/package-licenses/rustc/
 cp -a rust-std-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/* %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/
 
 chmod a-x %{buildroot}/usr/share/man/man1/*
+chmod a-x %{buildroot}/usr/share/package-licenses/rustc/*
 
 %files
 /usr/bin/rust-gdb
@@ -111,9 +116,10 @@ chmod a-x %{buildroot}/usr/share/man/man1/*
 /usr/bin/rustdoc
 /usr/lib64/*.so
 /usr/lib/rustlib/etc/*.py
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/lld
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
+/usr/share/package-licenses/rustc/*
 /usr/share/man/man1/rustc.1
 /usr/share/man/man1/rustdoc.1
