@@ -16,15 +16,14 @@
 
 Name:           rustc
 Version:        1.33.0
-Release:        53
+Release:        54
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
 Source0:        https://static.rust-lang.org/dist/rust-1.33.0-x86_64-unknown-linux-gnu.tar.gz
 #Patch1:         0001-Update-stage0-sysroot-incremental-lib-directory.patch
 
-BuildRequires:  cargo >= 0.18.0
-BuildRequires:  %{name} >= 0.17.0
+BuildRequires:  %{name} >= 1.33.0
 BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  gcc-dev
@@ -93,6 +92,7 @@ install -d %{buildroot}/usr/share/man/man1
 install -d %{buildroot}/usr/share/zsh/site-functions
 install -d %{buildroot}/usr/lib/rustlib
 install -d %{buildroot}/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib
+install cargo/bin/cargo %{buildroot}/usr/bin
 install rustc/bin/rust-gdb %{buildroot}/usr/bin
 install rustc/bin/rust-lldb %{buildroot}/usr/bin
 install rustc/bin/rustc %{buildroot}/usr/bin
@@ -110,6 +110,7 @@ chmod a-x %{buildroot}/usr/share/man/man1/*
 chmod a-x %{buildroot}/usr/share/package-licenses/rustc/*
 
 %files
+/usr/bin/cargo
 /usr/bin/rust-gdb
 /usr/bin/rust-lldb
 /usr/bin/rustc
