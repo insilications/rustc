@@ -1,2 +1,6 @@
 Updating rustc:
 - Check out https://src.fedoraproject.org/cgit/rpms/rust.git/tree/rust.spec for potential hickups in building
+
+Note:
+Please update rust-std32 whenever rustc is updated as well. Both of these packages should be updated hand-in-hand.
+https://github.com/clearlinux-pkgs/rust-std32

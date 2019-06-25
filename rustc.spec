@@ -1,10 +1,10 @@
 Name:           rustc
-Version:        1.33.0
-Release:        56
+Version:        1.35.0
+Release:        57
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.33.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.35.0-x86_64-unknown-linux-gnu.tar.gz
 
 Requires:       binutils
 Requires:       gcc
@@ -21,7 +21,7 @@ segfaults, and guarantees thread safety.
 
 %prep
 
-%setup -q -n rust-1.33.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-1.35.0-x86_64-unknown-linux-gnu
 
 %install
 install -d %{buildroot}/usr/bin
