@@ -1,6 +1,6 @@
 Name:           rustc
 Version:        1.35.0
-Release:        58
+Release:        59
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -10,7 +10,7 @@ Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-8-rust-1.35.0-stable.so()()(64bit)
+Provides:       libLLVM-8-rust-1.35.0-stable.so()(64bit)
 Provides:       libLLVM-8-rust-1.35.0-stable.so(LLVM_8)(64bit)
 Provides:       cargo
 
