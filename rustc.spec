@@ -10,8 +10,8 @@ Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-8svn.so()(64bit)
-Provides:       libLLVM-8svn.so(LLVM_8)(64bit)
+Provides:       libLLVM-8-rust-1.35.0-stable.so()()(64bit)
+Provides:       libLLVM-8-rust-1.35.0-stable.so(LLVM_8)(64bit)
 Provides:       cargo
 
 
