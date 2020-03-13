@@ -1,17 +1,20 @@
 Name:           rustc
-Version:        1.40.0
-Release:        64
+Version:        1.42.0
+Release:        65
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.40.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.42.0-x86_64-unknown-linux-gnu.tar.gz
 
 Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-9-rust-1.40.0-stable.so()(64bit)
-Provides:       libLLVM-9-rust-1.40.0-stable.so(LLVM_9)(64bit)
+Provides:       libLLVM-9-rust-%{version}-stable.so()(64bit)
+Provides:       libLLVM-9-rust-%{version}-stable.so(LLVM_9)(64bit)
+Provides:       librustc_driver-f0fe6d0442c8c573.so()(64bit)
+Provides:       libstd-c32b051c3aafd36c.so()(64bit)
+Provides:       libtest-48cf79d5a79901bb.so()(64bit)
 Provides:       cargo
 
 
@@ -21,7 +24,7 @@ segfaults, and guarantees thread safety.
 
 %prep
 
-%setup -q -n rust-1.40.0-x86_64-unknown-linux-gnu
+%setup -q -n rust-%{version}-x86_64-unknown-linux-gnu
 
 %install
 install -d %{buildroot}/usr/bin
@@ -60,7 +63,7 @@ chmod a-x %{buildroot}/usr/share/package-licenses/*/*
 /usr/lib64/*.so
 /usr/lib/rustlib/etc/*.py
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
-/usr/lib64/rustlib/x86_64-unknown-linux-gnu/codegen-backends/*.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.a
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.so
 /usr/share/bash-completion/completions/cargo
