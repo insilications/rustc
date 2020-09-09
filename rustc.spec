@@ -17,7 +17,7 @@ License  : Apache-2.0
 Requires: rustc-bin = %{version}-%{release}
 Requires: rustc-data = %{version}-%{release}
 Requires: rustc-man = %{version}-%{release}
-Provides:       libLLVM-11-rust-1.48.0-nightly.so(64bit)
+Provides:       libLLVM-11-rust-1.48.0-nightly.so()(64bit)
 Provides:       libLLVM-11-rust-1.48.0-nightly.so(LLVM_11)(64bit)
 Provides:       librustc_driver-397eb455b7db4ba5.so()(64bit)
 Provides:       librustc_macros-526b2b3435deae8e.so()(64bit)
