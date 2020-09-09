@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : rustc
 Version  : 64.unknown.gnu
-Release  : 73
+Release  : 74
 URL      : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source1  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz.asc
@@ -15,6 +15,8 @@ Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0
 Requires: rustc-bin = %{version}-%{release}
+Requires: rustc-data = %{version}-%{release}
+Requires: rustc-man = %{version}-%{release}
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
@@ -33,15 +35,25 @@ or otherwise impose significant runtime overhead.
 %package bin
 Summary: bin components for the rustc package.
 Group: Binaries
+Requires: rustc-data = %{version}-%{release}
 
 %description bin
 bin components for the rustc package.
+
+
+%package data
+Summary: data components for the rustc package.
+Group: Data
+
+%description data
+data components for the rustc package.
 
 
 %package dev
 Summary: dev components for the rustc package.
 Group: Development
 Requires: rustc-bin = %{version}-%{release}
+Requires: rustc-data = %{version}-%{release}
 Provides: rustc-devel = %{version}-%{release}
 Requires: rustc = %{version}-%{release}
 
@@ -52,9 +64,18 @@ dev components for the rustc package.
 %package doc
 Summary: doc components for the rustc package.
 Group: Documentation
+Requires: rustc-man = %{version}-%{release}
 
 %description doc
 doc components for the rustc package.
+
+
+%package man
+Summary: man components for the rustc package.
+Group: Default
+
+%description man
+man components for the rustc package.
 
 
 %package staticdev
@@ -75,7 +96,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1599662866
+export SOURCE_DATE_EPOCH=1599663706
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
 export CFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
@@ -111,89 +132,88 @@ echo "Installing..."
 
 
 %install
-export SOURCE_DATE_EPOCH=1599662866
+export SOURCE_DATE_EPOCH=1599663706
 rm -rf %{buildroot}
 ## install_macro start
-./install.sh --prefix=/usr/ --disable-ldconfig --destdir=%{?buildroot:%{buildroot}}/ 
+./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib64/ --disable-ldconfig 
 find %{?buildroot:%{buildroot}} -name "install.log" -exec rm {} \; 
-find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-64.unknown.gnu-73.x86_64//g' {} \;
+find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-64.unknown.gnu-74.x86_64//g' {} \;
 ## install_macro end
 
 %files
 %defattr(-,root,root,-)
-/usr
 /usr/etc/bash_completion.d/cargo
-/usr/lib/rustlib/components
-/usr/lib/rustlib/etc/gdb_load_rust_pretty_printers.py
-/usr/lib/rustlib/etc/gdb_lookup.py
-/usr/lib/rustlib/etc/gdb_providers.py
-/usr/lib/rustlib/etc/lldb_commands
-/usr/lib/rustlib/etc/lldb_lookup.py
-/usr/lib/rustlib/etc/lldb_providers.py
-/usr/lib/rustlib/etc/rust_types.py
-/usr/lib/rustlib/manifest-cargo
-/usr/lib/rustlib/manifest-clippy-preview
-/usr/lib/rustlib/manifest-llvm-tools-preview
-/usr/lib/rustlib/manifest-miri-preview
-/usr/lib/rustlib/manifest-rls-preview
-/usr/lib/rustlib/manifest-rust-analysis-x86_64-unknown-linux-gnu
-/usr/lib/rustlib/manifest-rust-analyzer-preview
-/usr/lib/rustlib/manifest-rust-docs
-/usr/lib/rustlib/manifest-rust-std-x86_64-unknown-linux-gnu
-/usr/lib/rustlib/manifest-rustc
-/usr/lib/rustlib/manifest-rustfmt-preview
-/usr/lib/rustlib/rust-installer-version
-/usr/lib/rustlib/uninstall.sh
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libaddr2line-e696cf3aebf90283.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libadler-54ba75ba19df3515.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liballoc-d74f3c28111d31b0.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcfg_if-4a28d8f1751385f2.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcompiler_builtins-f6fccc8824a0c5ae.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcore-2675a9a46b5cec89.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgetopts-8560a25cfa402f8b.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgimli-c9508c34f45c1407.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libhashbrown-ce3ade83fc902949.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liblibc-ca9410ae33b10c13.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libminiz_oxide-dec35b3159638863.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libobject-b4e081b17e50a5f3.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_abort-0bebc1cd720ecc2a.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_unwind-a9e48811766e19b7.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libproc_macro-5d427311327206c8.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libprofiler_builtins-4a5d404bf0c8b6de.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_demangle-fe83234631186fa0.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_alloc-2c834b52f045959b.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_core-c52e5d6301e1bd59.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_std-3d2c393da4b33eff.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libstd-faa3fd6c69b73b7d.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libterm-b17934653da8cacd.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libtest-803af28ef8be49ed.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunicode_width-7898ae5c7c06dc17.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunwind-c2f088360802c114.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-e696cf3aebf90283.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler-54ba75ba19df3515.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-d74f3c28111d31b0.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-4a28d8f1751385f2.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-f6fccc8824a0c5ae.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-2675a9a46b5cec89.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-8560a25cfa402f8b.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-c9508c34f45c1407.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-ce3ade83fc902949.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-ca9410ae33b10c13.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-dec35b3159638863.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-b4e081b17e50a5f3.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-0bebc1cd720ecc2a.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-a9e48811766e19b7.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-5d427311327206c8.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-4a5d404bf0c8b6de.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-fe83234631186fa0.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-2c834b52f045959b.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-c52e5d6301e1bd59.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-3d2c393da4b33eff.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-faa3fd6c69b73b7d.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libterm-b17934653da8cacd.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-803af28ef8be49ed.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunicode_width-7898ae5c7c06dc17.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunwind-c2f088360802c114.rlib
+/usr/lib64/rustlib/components
+/usr/lib64/rustlib/etc/gdb_load_rust_pretty_printers.py
+/usr/lib64/rustlib/etc/gdb_lookup.py
+/usr/lib64/rustlib/etc/gdb_providers.py
+/usr/lib64/rustlib/etc/lldb_commands
+/usr/lib64/rustlib/etc/lldb_lookup.py
+/usr/lib64/rustlib/etc/lldb_providers.py
+/usr/lib64/rustlib/etc/rust_types.py
+/usr/lib64/rustlib/manifest-cargo
+/usr/lib64/rustlib/manifest-clippy-preview
+/usr/lib64/rustlib/manifest-llvm-tools-preview
+/usr/lib64/rustlib/manifest-miri-preview
+/usr/lib64/rustlib/manifest-rls-preview
+/usr/lib64/rustlib/manifest-rust-analysis-x86_64-unknown-linux-gnu
+/usr/lib64/rustlib/manifest-rust-analyzer-preview
+/usr/lib64/rustlib/manifest-rust-docs
+/usr/lib64/rustlib/manifest-rust-std-x86_64-unknown-linux-gnu
+/usr/lib64/rustlib/manifest-rustc
+/usr/lib64/rustlib/manifest-rustfmt-preview
+/usr/lib64/rustlib/rust-installer-version
+/usr/lib64/rustlib/uninstall.sh
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libaddr2line-e696cf3aebf90283.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libadler-54ba75ba19df3515.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/liballoc-d74f3c28111d31b0.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libcfg_if-4a28d8f1751385f2.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libcompiler_builtins-f6fccc8824a0c5ae.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libcore-2675a9a46b5cec89.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libgetopts-8560a25cfa402f8b.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libgimli-c9508c34f45c1407.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libhashbrown-ce3ade83fc902949.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/liblibc-ca9410ae33b10c13.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libminiz_oxide-dec35b3159638863.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libobject-b4e081b17e50a5f3.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_abort-0bebc1cd720ecc2a.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_unwind-a9e48811766e19b7.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libproc_macro-5d427311327206c8.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libprofiler_builtins-4a5d404bf0c8b6de.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_demangle-fe83234631186fa0.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_alloc-2c834b52f045959b.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_core-c52e5d6301e1bd59.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_std-3d2c393da4b33eff.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libstd-faa3fd6c69b73b7d.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libterm-b17934653da8cacd.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libtest-803af28ef8be49ed.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libunicode_width-7898ae5c7c06dc17.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/analysis/libunwind-c2f088360802c114.json
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-e696cf3aebf90283.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libadler-54ba75ba19df3515.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-d74f3c28111d31b0.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-4a28d8f1751385f2.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-f6fccc8824a0c5ae.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libcore-2675a9a46b5cec89.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-8560a25cfa402f8b.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-c9508c34f45c1407.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-ce3ade83fc902949.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-ca9410ae33b10c13.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-dec35b3159638863.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libobject-b4e081b17e50a5f3.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-0bebc1cd720ecc2a.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-a9e48811766e19b7.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-5d427311327206c8.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-4a5d404bf0c8b6de.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-fe83234631186fa0.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-2c834b52f045959b.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-c52e5d6301e1bd59.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-3d2c393da4b33eff.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libstd-faa3fd6c69b73b7d.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libterm-b17934653da8cacd.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libtest-803af28ef8be49ed.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libunicode_width-7898ae5c7c06dc17.rlib
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libunwind-c2f088360802c114.rlib
 
 %files bin
 %defattr(-,root,root,-)
@@ -211,28 +231,32 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/bin/rustc
 /usr/bin/rustdoc
 /usr/bin/rustfmt
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-ar
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-nm
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-objcopy
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-objdump
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-profdata
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-readobj
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-size
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/llvm-strip
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-ar
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-nm
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-objcopy
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-objdump
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-profdata
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-readobj
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-size
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/llvm-strip
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/zsh/site-functions/_cargo
 
 %files dev
 %defattr(-,root,root,-)
-/usr/lib/libLLVM-11-rust-1.48.0-nightly.so
-/usr/lib/libchalk_derive-96cabf63e12d0a8d.so
-/usr/lib/librustc_driver-397eb455b7db4ba5.so
-/usr/lib/librustc_macros-526b2b3435deae8e.so
-/usr/lib/libstd-faa3fd6c69b73b7d.so
-/usr/lib/libtest-803af28ef8be49ed.so
-/usr/lib/libtracing_attributes-f365db74608592aa.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libLLVM-11-rust-1.48.0-nightly.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-faa3fd6c69b73b7d.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-803af28ef8be49ed.so
+/usr/lib64/libLLVM-11-rust-1.48.0-nightly.so
+/usr/lib64/libchalk_derive-96cabf63e12d0a8d.so
+/usr/lib64/librustc_driver-397eb455b7db4ba5.so
+/usr/lib64/librustc_macros-526b2b3435deae8e.so
+/usr/lib64/libstd-faa3fd6c69b73b7d.so
+/usr/lib64/libtest-803af28ef8be49ed.so
+/usr/lib64/libtracing_attributes-f365db74608592aa.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libLLVM-11-rust-1.48.0-nightly.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libstd-faa3fd6c69b73b7d.so
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/libtest-803af28ef8be49ed.so
 
 %files doc
 %defattr(0644,root,root,0755)
@@ -12048,10 +12072,188 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/iter-is-partitioned.html
 /usr/share/doc/rust/html/unstable-book/library-features/iter-map-while.html
 /usr/share/doc/rust/html/unstable-book/library-features/iter-order-by.html
+/usr/share/doc/rust/html/unstable-book/library-features/iter-partition-in-place.html
+/usr/share/doc/rust/html/unstable-book/library-features/iterator-fold-self.html
+/usr/share/doc/rust/html/unstable-book/library-features/layout-for-ptr.html
+/usr/share/doc/rust/html/unstable-book/library-features/liballoc-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/libstd-io-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/libstd-sys-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/libstd-thread-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/linked-list-cursors.html
+/usr/share/doc/rust/html/unstable-book/library-features/linked-list-extras.html
+/usr/share/doc/rust/html/unstable-book/library-features/linked-list-prepend.html
+/usr/share/doc/rust/html/unstable-book/library-features/linked-list-remove.html
+/usr/share/doc/rust/html/unstable-book/library-features/llvm-asm.html
+/usr/share/doc/rust/html/unstable-book/library-features/log-syntax.html
+/usr/share/doc/rust/html/unstable-book/library-features/map-entry-replace.html
+/usr/share/doc/rust/html/unstable-book/library-features/map-first-last.html
+/usr/share/doc/rust/html/unstable-book/library-features/map-into-keys-values.html
+/usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-extra.html
+/usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-ref.html
+/usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-slice.html
+/usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-uninit-array.html
+/usr/share/doc/rust/html/unstable-book/library-features/new-uninit.html
+/usr/share/doc/rust/html/unstable-book/library-features/nonnull-slice-from-raw-parts.html
+/usr/share/doc/rust/html/unstable-book/library-features/once-cell.html
+/usr/share/doc/rust/html/unstable-book/library-features/once-poison.html
+/usr/share/doc/rust/html/unstable-book/library-features/option-expect-none.html
+/usr/share/doc/rust/html/unstable-book/library-features/option-result-contains.html
+/usr/share/doc/rust/html/unstable-book/library-features/option-unwrap-none.html
+/usr/share/doc/rust/html/unstable-book/library-features/option-zip.html
+/usr/share/doc/rust/html/unstable-book/library-features/or-insert-with-key.html
+/usr/share/doc/rust/html/unstable-book/library-features/osstring-ascii.html
+/usr/share/doc/rust/html/unstable-book/library-features/panic-abort.html
+/usr/share/doc/rust/html/unstable-book/library-features/panic-info-message.html
+/usr/share/doc/rust/html/unstable-book/library-features/panic-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/panic-unwind.html
+/usr/share/doc/rust/html/unstable-book/library-features/partition-point.html
+/usr/share/doc/rust/html/unstable-book/library-features/pattern.html
+/usr/share/doc/rust/html/unstable-book/library-features/peekable-next-if.html
+/usr/share/doc/rust/html/unstable-book/library-features/poll-map.html
+/usr/share/doc/rust/html/unstable-book/library-features/print-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-def-site.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-diagnostic.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-is-available.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-quote.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-span.html
+/usr/share/doc/rust/html/unstable-book/library-features/proc-macro-tracked-env.html
+/usr/share/doc/rust/html/unstable-book/library-features/process-exitcode-placeholder.html
+/usr/share/doc/rust/html/unstable-book/library-features/process-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/profiler-runtime-lib.html
+/usr/share/doc/rust/html/unstable-book/library-features/ptr-as-uninit.html
+/usr/share/doc/rust/html/unstable-book/library-features/ptr-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/raw-ref-macros.html
+/usr/share/doc/rust/html/unstable-book/library-features/raw-vec-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/raw.html
+/usr/share/doc/rust/html/unstable-book/library-features/read-initializer.html
+/usr/share/doc/rust/html/unstable-book/library-features/ready-macro.html
+/usr/share/doc/rust/html/unstable-book/library-features/receiver-trait.html
+/usr/share/doc/rust/html/unstable-book/library-features/refcell-take.html
+/usr/share/doc/rust/html/unstable-book/library-features/renamed-spin-loop.html
+/usr/share/doc/rust/html/unstable-book/library-features/result-cloned.html
+/usr/share/doc/rust/html/unstable-book/library-features/result-contains-err.html
+/usr/share/doc/rust/html/unstable-book/library-features/result-copied.html
+/usr/share/doc/rust/html/unstable-book/library-features/result-flattening.html
+/usr/share/doc/rust/html/unstable-book/library-features/rt.html
+/usr/share/doc/rust/html/unstable-book/library-features/seek-convenience.html
+/usr/share/doc/rust/html/unstable-book/library-features/set-ptr-value.html
+/usr/share/doc/rust/html/unstable-book/library-features/set-stdio.html
+/usr/share/doc/rust/html/unstable-book/library-features/sgx-platform.html
+/usr/share/doc/rust/html/unstable-book/library-features/shrink-to.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-check-range.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-concat-ext.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-concat-trait.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-fill.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-index-methods.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-iter-mut-as-slice.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-partition-at-index.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-partition-dedup.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-ptr-get.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-ptr-len.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-ptr-range.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-split-at-unchecked.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-strip.html
+/usr/share/doc/rust/html/unstable-book/library-features/sort-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/split-inclusive.html
+/usr/share/doc/rust/html/unstable-book/library-features/std-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/stdsimd.html
+/usr/share/doc/rust/html/unstable-book/library-features/step-trait-ext.html
+/usr/share/doc/rust/html/unstable-book/library-features/step-trait.html
+/usr/share/doc/rust/html/unstable-book/library-features/str-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/str-split-once.html
+/usr/share/doc/rust/html/unstable-book/library-features/termination-trait-lib.html
+/usr/share/doc/rust/html/unstable-book/library-features/test.html
+/usr/share/doc/rust/html/unstable-book/library-features/thread-id-value.html
+/usr/share/doc/rust/html/unstable-book/library-features/thread-local-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/thread-spawn-unchecked.html
+/usr/share/doc/rust/html/unstable-book/library-features/toowned-clone-into.html
+/usr/share/doc/rust/html/unstable-book/library-features/total-cmp.html
+/usr/share/doc/rust/html/unstable-book/library-features/trace-macros.html
+/usr/share/doc/rust/html/unstable-book/library-features/trusted-len.html
+/usr/share/doc/rust/html/unstable-book/library-features/trusted-random-access.html
+/usr/share/doc/rust/html/unstable-book/library-features/try-find.html
+/usr/share/doc/rust/html/unstable-book/library-features/try-reserve.html
+/usr/share/doc/rust/html/unstable-book/library-features/try-trait.html
+/usr/share/doc/rust/html/unstable-book/library-features/type-name-of-val.html
+/usr/share/doc/rust/html/unstable-book/library-features/unchecked-math.html
+/usr/share/doc/rust/html/unstable-book/library-features/unicode-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/unsafe-cell-raw-get.html
+/usr/share/doc/rust/html/unstable-book/library-features/unsigned-abs.html
+/usr/share/doc/rust/html/unstable-book/library-features/unsize.html
+/usr/share/doc/rust/html/unstable-book/library-features/unwrap-infallible.html
+/usr/share/doc/rust/html/unstable-book/library-features/update-panic-count.html
+/usr/share/doc/rust/html/unstable-book/library-features/variant-count.html
+/usr/share/doc/rust/html/unstable-book/library-features/vec-into-raw-parts.html
+/usr/share/doc/rust/html/unstable-book/library-features/vec-remove-item.html
+/usr/share/doc/rust/html/unstable-book/library-features/vec-resize-default.html
+/usr/share/doc/rust/html/unstable-book/library-features/vec-spare-capacity.html
+/usr/share/doc/rust/html/unstable-book/library-features/wake-trait.html
+/usr/share/doc/rust/html/unstable-book/library-features/wasi-ext.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-by-handle.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-c.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-file-type-ext.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-handle.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-net.html
+/usr/share/doc/rust/html/unstable-book/library-features/windows-stdio.html
+/usr/share/doc/rust/html/unstable-book/library-features/with-options.html
+/usr/share/doc/rust/html/unstable-book/library-features/wrapping-int-impl.html
+/usr/share/doc/rust/html/unstable-book/library-features/wrapping-next-power-of-two.html
+/usr/share/doc/rust/html/unstable-book/library-features/write-all-vectored.html
+/usr/share/doc/rust/html/unstable-book/mark.min.js
+/usr/share/doc/rust/html/unstable-book/print.html
+/usr/share/doc/rust/html/unstable-book/searcher.js
+/usr/share/doc/rust/html/unstable-book/searchindex.js
+/usr/share/doc/rust/html/unstable-book/searchindex.json
+/usr/share/doc/rust/html/unstable-book/the-unstable-book.html
+/usr/share/doc/rust/html/unstable-book/tomorrow-night.css
+/usr/share/doc/rust/html/version_info.html
+/usr/share/doc/rust/html/wheel1.48.0.svg
+/usr/share/doc/rustfmt/LICENSE-APACHE
+/usr/share/doc/rustfmt/LICENSE-MIT
+/usr/share/doc/rustfmt/README.md
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/cargo-bench.1
+/usr/share/man/man1/cargo-build.1
+/usr/share/man/man1/cargo-check.1
+/usr/share/man/man1/cargo-clean.1
+/usr/share/man/man1/cargo-doc.1
+/usr/share/man/man1/cargo-fetch.1
+/usr/share/man/man1/cargo-fix.1
+/usr/share/man/man1/cargo-generate-lockfile.1
+/usr/share/man/man1/cargo-help.1
+/usr/share/man/man1/cargo-init.1
+/usr/share/man/man1/cargo-install.1
+/usr/share/man/man1/cargo-locate-project.1
+/usr/share/man/man1/cargo-login.1
+/usr/share/man/man1/cargo-metadata.1
+/usr/share/man/man1/cargo-new.1
+/usr/share/man/man1/cargo-owner.1
+/usr/share/man/man1/cargo-package.1
+/usr/share/man/man1/cargo-pkgid.1
+/usr/share/man/man1/cargo-publish.1
+/usr/share/man/man1/cargo-run.1
+/usr/share/man/man1/cargo-rustc.1
+/usr/share/man/man1/cargo-rustdoc.1
+/usr/share/man/man1/cargo-search.1
+/usr/share/man/man1/cargo-test.1
+/usr/share/man/man1/cargo-tree.1
+/usr/share/man/man1/cargo-uninstall.1
+/usr/share/man/man1/cargo-update.1
+/usr/share/man/man1/cargo-vendor.1
+/usr/share/man/man1/cargo-verify-project.1
+/usr/share/man/man1/cargo-version.1
+/usr/share/man/man1/cargo-yank.1
+/usr/share/man/man1/cargo.1
+/usr/share/man/man1/rustc.1
+/usr/share/man/man1/rustdoc.1
 
 %files staticdev
 %defattr(-,root,root,-)
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.asan.a
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.lsan.a
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.msan.a
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.tsan.a
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.asan.a
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.lsan.a
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.msan.a
+/usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/librustc-nightly_rt.tsan.a
