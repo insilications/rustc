@@ -1,3 +1,11 @@
-./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib64/ --disable-ldconfig
+./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib/ --disable-ldconfig
+# shell completion for bash
+install -dm 0755 %{buildroot}/usr/share/bash-completion/completions
+install -m0644  %{buildroot}/usr/etc/bash_completion.d/cargo %{buildroot}/usr/share/bash-completion/completions/cargo
+rm -rf %{buildroot}/usr/etc/bash_completion.d/cargo
+#
 find %{?buildroot:%{buildroot}} -name "install.log" -exec rm {} \;
-find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-64.unknown.gnu-74.x86_64//g' {} \;
+find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-[0-9]*\.unknown\.gnu-[0-9]*\.x86_64//g' {} \;
+#pushd %{?buildroot:%{buildroot}}
+#rg -e "/builddir/build/BUILDROOT/"
+#popd
