@@ -1,1 +1,3 @@
-echo "Installed" 
+./install.sh --prefix=/usr/ --disable-ldconfig --destdir=%{?buildroot:%{buildroot}}/
+find %{?buildroot:%{buildroot}} -name "install.log" -exec rm {} \;
+find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-64.unknown.gnu-73.x86_64//g' {} \;

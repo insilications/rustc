@@ -1,2 +1,2 @@
- ./install.sh --prefix=%{buildroot}/usr --libdir=%{buildroot}/usr/lib64 --verbose --disable-ldconfig
- 
+echo "Installing..."
+# /builddir/build/BUILDROOT/ /builddir/build/BUILDROOT/rustc-64.unknown.gnu-73.x86_64
