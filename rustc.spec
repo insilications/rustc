@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : rustc
 Version  : 64.unknown.gnu
-Release  : 71
+Release  : 72
 URL      : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source1  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz.asc
@@ -17,6 +17,10 @@ License  : Apache-2.0
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+# Ignore missing build ids
+%undefine _missing_build_ids_terminate_build
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description
 # The Rust Programming Language
@@ -34,7 +38,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1599657937
+export SOURCE_DATE_EPOCH=1599658081
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
 export CFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
@@ -70,7 +74,7 @@ export NM=gcc-nm
 
 
 %install
-export SOURCE_DATE_EPOCH=1599657937
+export SOURCE_DATE_EPOCH=1599658081
 rm -rf %{buildroot}
 ## install_macro start
 echo "Installed"
