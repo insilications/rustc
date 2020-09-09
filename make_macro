@@ -1,0 +1,2 @@
+ ./install.sh --prefix=%{buildroot}/usr --libdir=%{buildroot}/usr/lib64 --verbose --disable-ldconfig
+ 

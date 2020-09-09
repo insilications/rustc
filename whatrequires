@@ -1,0 +1,7 @@
+# This file contains recursive sources that require this package
+firecracker
+librsvg
+mozjs68
+proc-macro2
+suricata
+unicode-xid
