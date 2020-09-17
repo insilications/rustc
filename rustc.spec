@@ -1,21 +1,23 @@
 Name:           rustc
-Version:        1.43.1
-Release:        66
+Version:        1.46.0
+Release:        67
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.43.1-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.46.0-x86_64-unknown-linux-gnu.tar.gz
 
 Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-9-rust-%{version}-stable.so()(64bit)
-Provides:       libLLVM-9-rust-%{version}-stable.so(LLVM_9)(64bit)
-Provides:       librustc_driver-b945df8fb2526081.so()(64bit)
-Provides:       librustc_macros-200965acce5eeccb.so()(64bit)
-Provides:       libstd-3859b7e52a41a8fd.so()(64bit)
-Provides:       libtest-c4aa6514e6be1a7c.so()(64bit)
+Provides:       libLLVM-10-rust-%{version}-stable.so()(64bit)
+Provides:       libLLVM-10-rust-%{version}-stable.so(LLVM_10)(64bit)
+Provides:       librustc_driver-1cd905f603d5b1d4.so()(64bit)
+Provides:       librustc_derive-dceac1bd5fa0205d.so()(64bit)
+Provides:       librustc_macros-042374653b09ed79.so()(64bit)
+Provides:       libstd-cf0f33af3a901778.so()(64bit)
+Provides:       libtest-94bb32460f7582ad.so()(64bit)
+Provides:       libtracing_attributes-29b67d0ea06e854f.so()(64bit)
 Provides:       cargo
 
 
