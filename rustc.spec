@@ -1,23 +1,23 @@
 Name:           rustc
-Version:        1.46.0
-Release:        67
+Version:        1.47.0
+Release:        68
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.46.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.47.0-x86_64-unknown-linux-gnu.tar.gz
 
 Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-10-rust-%{version}-stable.so()(64bit)
-Provides:       libLLVM-10-rust-%{version}-stable.so(LLVM_10)(64bit)
-Provides:       librustc_driver-1cd905f603d5b1d4.so()(64bit)
-Provides:       librustc_derive-dceac1bd5fa0205d.so()(64bit)
-Provides:       librustc_macros-042374653b09ed79.so()(64bit)
-Provides:       libstd-cf0f33af3a901778.so()(64bit)
-Provides:       libtest-94bb32460f7582ad.so()(64bit)
-Provides:       libtracing_attributes-29b67d0ea06e854f.so()(64bit)
+Provides:       libLLVM-11-rust-%{version}-stable.so()(64bit)
+Provides:       libLLVM-11-rust-%{version}-stable.so(LLVM_11)(64bit)
+Provides:       librustc_driver-ff4ec557f69b94a7.so(64bit)
+Provides:       librustc_derive-8c5c69f492ead449.so()(64bit)
+Provides:       librustc_macros-1e9f2ea5bcbf04e7.so()(64bit)
+Provides:       libstd-f14aca24435a5414.so()(64bit)
+Provides:       libtest-1a99bd050f5bcac9.so()(64bit)
+Provides:       libtracing_attributes-72c431a73c36fa6b.so()(64bit)
 Provides:       cargo
 
 
@@ -64,7 +64,7 @@ chmod a-x %{buildroot}/usr/share/package-licenses/*/*
 /usr/bin/rustc
 /usr/bin/rustdoc
 /usr/lib64/*.so
-/usr/lib/rustlib/etc/*.py
+/usr/lib/rustlib/etc/*
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.a
 /usr/lib64/rustlib/x86_64-unknown-linux-gnu/lib/*.rlib
