@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : rustc
 Version  : 64.unknown.gnu
-Release  : 79
+Release  : 80
 URL      : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source1  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz.asc
@@ -22,6 +22,8 @@ Requires: rustc-man = %{version}-%{release}
 %define debug_package %{nil}
 # Ignore missing build ids
 %undefine _missing_build_ids_terminate_build
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description
 # The Rust Programming Language
@@ -34,6 +36,8 @@ or otherwise impose significant runtime overhead.
 Summary: bin components for the rustc package.
 Group: Binaries
 Requires: rustc-data = %{version}-%{release}
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description bin
 bin components for the rustc package.
@@ -42,6 +46,8 @@ bin components for the rustc package.
 %package data
 Summary: data components for the rustc package.
 Group: Data
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description data
 data components for the rustc package.
@@ -54,6 +60,8 @@ Requires: rustc-bin = %{version}-%{release}
 Requires: rustc-data = %{version}-%{release}
 Provides: rustc-devel = %{version}-%{release}
 Requires: rustc = %{version}-%{release}
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description dev
 dev components for the rustc package.
@@ -63,6 +71,8 @@ dev components for the rustc package.
 Summary: doc components for the rustc package.
 Group: Documentation
 Requires: rustc-man = %{version}-%{release}
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description doc
 doc components for the rustc package.
@@ -71,6 +81,8 @@ doc components for the rustc package.
 %package man
 Summary: man components for the rustc package.
 Group: Default
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description man
 man components for the rustc package.
@@ -80,6 +92,8 @@ man components for the rustc package.
 Summary: staticdev components for the rustc package.
 Group: Default
 Requires: rustc-dev = %{version}-%{release}
+# Disable automatic requeriments processing
+AutoReq: no
 
 %description staticdev
 staticdev components for the rustc package.
@@ -95,7 +109,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1602707058
+export SOURCE_DATE_EPOCH=1602707370
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
 export CFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
@@ -131,7 +145,7 @@ echo "Installing..."
 
 
 %install
-export SOURCE_DATE_EPOCH=1602707058
+export SOURCE_DATE_EPOCH=1602707370
 rm -rf %{buildroot}
 ## install_macro start
 ./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib/ --disable-ldconfig 

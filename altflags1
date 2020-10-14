@@ -13,7 +13,7 @@ export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 #
-#export MAKEFLAGS=%{?_smp_mflags}
+export MAKEFLAGS=%{?_smp_mflags}
 #
 %global _lto_cflags 1
 #global _lto_cflags %{nil}
