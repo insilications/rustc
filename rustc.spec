@@ -1,6 +1,6 @@
 Name:           rustc
 Version:        1.47.0
-Release:        68
+Release:        69
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 URL:            https://www.rust-lang.org
@@ -12,7 +12,7 @@ Requires:       gcc-dev
 Requires:       libc6-dev
 Provides:       libLLVM-11-rust-%{version}-stable.so()(64bit)
 Provides:       libLLVM-11-rust-%{version}-stable.so(LLVM_11)(64bit)
-Provides:       librustc_driver-ff4ec557f69b94a7.so(64bit)
+Provides:       librustc_driver-ff4ec557f69b94a7.so()(64bit)
 Provides:       librustc_derive-8c5c69f492ead449.so()(64bit)
 Provides:       librustc_macros-1e9f2ea5bcbf04e7.so()(64bit)
 Provides:       libstd-f14aca24435a5414.so()(64bit)
