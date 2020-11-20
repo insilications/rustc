@@ -1,25 +1,20 @@
+# ALL Rust libraries are private, because they don't keep an ABI.
+%global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
+%global __provides_exclude ^(%{_privatelibs})$
+%global __requires_exclude ^(%{_privatelibs})$
+
 Name:           rustc
-Version:        1.47.0
-Release:        69
+Version:        1.48.0
+Release:        70
+URL:            https://www.rust-lang.org
+Source0:        https://static.rust-lang.org/dist/rust-1.48.0-x86_64-unknown-linux-gnu.tar.gz
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
-URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.47.0-x86_64-unknown-linux-gnu.tar.gz
-
 Requires:       binutils
 Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
-Provides:       libLLVM-11-rust-%{version}-stable.so()(64bit)
-Provides:       libLLVM-11-rust-%{version}-stable.so(LLVM_11)(64bit)
-Provides:       librustc_driver-ff4ec557f69b94a7.so()(64bit)
-Provides:       librustc_derive-8c5c69f492ead449.so()(64bit)
-Provides:       librustc_macros-1e9f2ea5bcbf04e7.so()(64bit)
-Provides:       libstd-f14aca24435a5414.so()(64bit)
-Provides:       libtest-1a99bd050f5bcac9.so()(64bit)
-Provides:       libtracing_attributes-72c431a73c36fa6b.so()(64bit)
 Provides:       cargo
-
 
 %description
 Rust is a systems programming language that runs blazingly fast, prevents
