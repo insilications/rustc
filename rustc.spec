@@ -4,10 +4,10 @@
 %global __requires_exclude ^(%{_privatelibs})$
 
 Name:           rustc
-Version:        1.48.0
-Release:        70
+Version:        1.49.0
+Release:        71
 URL:            https://www.rust-lang.org
-Source0:        https://static.rust-lang.org/dist/rust-1.48.0-x86_64-unknown-linux-gnu.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-1.49.0-x86_64-unknown-linux-gnu.tar.gz
 Summary:        The Rust Programming Language
 License:        Apache-2.0 BSD-2-Clause BSD-3-Clause ISC MIT
 Requires:       binutils
