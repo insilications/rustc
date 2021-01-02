@@ -5,7 +5,7 @@
 
 Name:           rustc
 Version:        1.49.0
-Release:        71
+Release:        72
 URL:            https://www.rust-lang.org
 Source0:        https://static.rust-lang.org/dist/rust-1.49.0-x86_64-unknown-linux-gnu.tar.gz
 Summary:        The Rust Programming Language
@@ -15,6 +15,8 @@ Requires:       gcc
 Requires:       gcc-dev
 Requires:       libc6-dev
 Provides:       cargo
+Provides:       libLLVM-11-rust-%{version}-stable.so()(64bit)
+Provides:       libLLVM-11-rust-%{version}-stable.so(LLVM_11)(64bit)
 
 %description
 Rust is a systems programming language that runs blazingly fast, prevents
