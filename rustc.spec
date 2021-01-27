@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : rustc
 Version  : 64.unknown.gnu
-Release  : 82
+Release  : 83
 URL      : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Source0  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
 Summary  : No detailed summary available
@@ -24,9 +24,9 @@ Requires: rustc-man = %{version}-%{release}
 AutoReq: no
 
 %description
-<a href = "https://www.rust-lang.org/">
-<img width = "90%" height = "auto" src = "https://img.shields.io/badge/Rust-Programming%20Language-black?style=flat&logo=rust" alt = "The Rust Programming Language">
-</a>
+# The Rust Programming Language
+This is the main source code repository for [Rust]. It contains the compiler,
+standard library, and documentation.
 
 %package bin
 Summary: bin components for the rustc package.
@@ -116,7 +116,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1609549993
+export SOURCE_DATE_EPOCH=1611740706
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
 export CFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
@@ -130,9 +130,9 @@ export CFFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl
 #
 export LDFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
 #
-export AR=gcc-ar
-export RANLIB=gcc-ranlib
-export NM=gcc-nm
+export AR=/usr/bin/gcc-ar
+export RANLIB=/usr/bin/gcc-ranlib
+export NM=/usr/bin/gcc-nm
 #
 export MAKEFLAGS=%{?_smp_mflags}
 #
@@ -149,7 +149,7 @@ echo "Installing..."
 
 
 %install
-export SOURCE_DATE_EPOCH=1609549993
+export SOURCE_DATE_EPOCH=1611740706
 rm -rf %{buildroot}
 ## install_macro start
 ./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib/ --disable-ldconfig
@@ -171,6 +171,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/bin/cargo-miri
 /usr/bin/clippy-driver
 /usr/bin/miri
+/usr/bin/rls
 /usr/bin/rust-analyzer
 /usr/bin/rust-gdb
 /usr/bin/rust-gdbgui
@@ -202,9 +203,9 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 %files dev
 %defattr(-,root,root,-)
 /usr/lib/libLLVM-11-rust-1.51.0-nightly.so
-/usr/lib/librustc_driver-834924640dd700d5.so
-/usr/lib/libstd-25c6acf8063a3802.so
-/usr/lib/libtest-57470d2aa8f7aa83.so
+/usr/lib/librustc_driver-39bcd9975ee80c36.so
+/usr/lib/libstd-8ca495943bae7405.so
+/usr/lib/libtest-1869d73cb472a83c.so
 /usr/lib/rustlib/components
 /usr/lib/rustlib/etc/gdb_load_rust_pretty_printers.py
 /usr/lib/rustlib/etc/gdb_lookup.py
@@ -217,6 +218,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/lib/rustlib/manifest-clippy-preview
 /usr/lib/rustlib/manifest-llvm-tools-preview
 /usr/lib/rustlib/manifest-miri-preview
+/usr/lib/rustlib/manifest-rls-preview
 /usr/lib/rustlib/manifest-rust-analysis-x86_64-unknown-linux-gnu
 /usr/lib/rustlib/manifest-rust-analyzer-preview
 /usr/lib/rustlib/manifest-rust-docs
@@ -225,59 +227,59 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/lib/rustlib/manifest-rustfmt-preview
 /usr/lib/rustlib/rust-installer-version
 /usr/lib/rustlib/uninstall.sh
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libaddr2line-6c8e02b8fedc1e5f.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libadler-9ef2480568df55af.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liballoc-9c4002b5f79ba0e1.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcfg_if-512eb53291f6de7e.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcompiler_builtins-ef2408da76957905.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libaddr2line-f12d17a047776008.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libadler-9ff49e5df977573d.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liballoc-aa547327a7679d28.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcfg_if-d9f2cb19c79e847e.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcompiler_builtins-ea377e9224b11a8a.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libcore-9ea09a899c3eda46.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgetopts-0ebd9bb22f23af0e.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgimli-807e5ad203594490.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libhashbrown-1af568081add9042.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgetopts-594aad2d6f20d8ec.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libgimli-3d968aa3120f6a27.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libhashbrown-f2c707309e5edc5c.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liblibc-5efacc5025f9f3d8.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libminiz_oxide-37db28e905edb56b.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libobject-1e0f0992cdbecd66.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_abort-a8a5b853536a625e.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_unwind-539f13c9442f1597.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libproc_macro-eba4ba6c63f96a02.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libprofiler_builtins-7a031bee80843aff.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_demangle-083fce1bea11612a.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_alloc-1395b54a3b3f45bf.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libminiz_oxide-fe971cf9622d0c47.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libobject-323dea4ee1c9a010.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_abort-5c224bf23c50c6c7.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libpanic_unwind-5a0761f1cab850a8.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libproc_macro-c586b6ebb78d6222.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libprofiler_builtins-a2dfa79aebcd4dda.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_demangle-22cd238a7814521c.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_alloc-6b6b4b2bc151fc5a.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_core-90996f4879673567.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_std-e214ce90a0e0e9f3.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libstd-25c6acf8063a3802.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libterm-38e8088659bcbfe9.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libtest-57470d2aa8f7aa83.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunicode_width-10a1d905b289a5ce.json
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunwind-caba820045f178d5.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/librustc_std_workspace_std-08a63d6cfc7903ca.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libstd-8ca495943bae7405.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libterm-ac7ac8f26dd32223.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libtest-1869d73cb472a83c.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunicode_width-180f10e4bd81a900.json
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libunwind-d2357068fc697e01.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libLLVM-11-rust-1.51.0-nightly.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-6c8e02b8fedc1e5f.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler-9ef2480568df55af.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-9c4002b5f79ba0e1.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-512eb53291f6de7e.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-ef2408da76957905.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-f12d17a047776008.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler-9ff49e5df977573d.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-aa547327a7679d28.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-d9f2cb19c79e847e.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-ea377e9224b11a8a.rlib
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-9ea09a899c3eda46.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-0ebd9bb22f23af0e.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-807e5ad203594490.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-1af568081add9042.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-594aad2d6f20d8ec.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-3d968aa3120f6a27.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-f2c707309e5edc5c.rlib
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-5efacc5025f9f3d8.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-37db28e905edb56b.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-1e0f0992cdbecd66.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-a8a5b853536a625e.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-539f13c9442f1597.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-eba4ba6c63f96a02.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-7a031bee80843aff.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-083fce1bea11612a.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-1395b54a3b3f45bf.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-fe971cf9622d0c47.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-323dea4ee1c9a010.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-5c224bf23c50c6c7.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-5a0761f1cab850a8.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-c586b6ebb78d6222.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-a2dfa79aebcd4dda.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-22cd238a7814521c.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-6b6b4b2bc151fc5a.rlib
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-90996f4879673567.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-e214ce90a0e0e9f3.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-25c6acf8063a3802.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-25c6acf8063a3802.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libterm-38e8088659bcbfe9.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-57470d2aa8f7aa83.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-57470d2aa8f7aa83.so
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunicode_width-10a1d905b289a5ce.rlib
-/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunwind-caba820045f178d5.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-08a63d6cfc7903ca.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-8ca495943bae7405.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-8ca495943bae7405.so
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libterm-ac7ac8f26dd32223.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-1869d73cb472a83c.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libtest-1869d73cb472a83c.so
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunicode_width-180f10e4bd81a900.rlib
+/usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/libunwind-d2357068fc697e01.rlib
 
 %files doc
 %defattr(0644,root,root,0755)
@@ -291,6 +293,9 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/miri/LICENSE-APACHE
 /usr/share/doc/miri/LICENSE-MIT
 /usr/share/doc/miri/README.md
+/usr/share/doc/rls/LICENSE-APACHE
+/usr/share/doc/rls/LICENSE-MIT
+/usr/share/doc/rls/README.md
 /usr/share/doc/rust-analyzer/LICENSE-APACHE
 /usr/share/doc/rust-analyzer/LICENSE-MIT
 /usr/share/doc/rust-analyzer/README.md
@@ -1307,6 +1312,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/cargo/images/auth-level-acl.png
 /usr/share/doc/rust/html/cargo/images/org-level-acl.png
 /usr/share/doc/rust/html/cargo/images/profile-selection.svg
+/usr/share/doc/rust/html/cargo/images/winapi-features.svg
 /usr/share/doc/rust/html/cargo/index.html
 /usr/share/doc/rust/html/cargo/mark.min.js
 /usr/share/doc/rust/html/cargo/print.html
@@ -1316,6 +1322,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/cargo/reference/config.html
 /usr/share/doc/rust/html/cargo/reference/environment-variables.html
 /usr/share/doc/rust/html/cargo/reference/external-tools.html
+/usr/share/doc/rust/html/cargo/reference/features-examples.html
 /usr/share/doc/rust/html/cargo/reference/features.html
 /usr/share/doc/rust/html/cargo/reference/index.html
 /usr/share/doc/rust/html/cargo/reference/manifest.html
@@ -9602,6 +9609,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/char/struct.ToLowercase.html
 /usr/share/doc/rust/html/core/char/struct.ToUppercase.html
 /usr/share/doc/rust/html/core/clone/index.html
+/usr/share/doc/rust/html/core/clone/macro.Clone!.html
+/usr/share/doc/rust/html/core/clone/macro.Clone.html
 /usr/share/doc/rust/html/core/clone/sidebar-items.js
 /usr/share/doc/rust/html/core/clone/trait.Clone.html
 /usr/share/doc/rust/html/core/cmp/enum.Ordering.html
@@ -9612,6 +9621,14 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/cmp/fn.min_by.html
 /usr/share/doc/rust/html/core/cmp/fn.min_by_key.html
 /usr/share/doc/rust/html/core/cmp/index.html
+/usr/share/doc/rust/html/core/cmp/macro.Eq!.html
+/usr/share/doc/rust/html/core/cmp/macro.Eq.html
+/usr/share/doc/rust/html/core/cmp/macro.Ord!.html
+/usr/share/doc/rust/html/core/cmp/macro.Ord.html
+/usr/share/doc/rust/html/core/cmp/macro.PartialEq!.html
+/usr/share/doc/rust/html/core/cmp/macro.PartialEq.html
+/usr/share/doc/rust/html/core/cmp/macro.PartialOrd!.html
+/usr/share/doc/rust/html/core/cmp/macro.PartialOrd.html
 /usr/share/doc/rust/html/core/cmp/sidebar-items.js
 /usr/share/doc/rust/html/core/cmp/struct.Reverse.html
 /usr/share/doc/rust/html/core/cmp/trait.Eq.html
@@ -14022,6 +14039,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/core_arch/x86_64/xsave/fn._xsaves64.html
 /usr/share/doc/rust/html/core/default/fn.default.html
 /usr/share/doc/rust/html/core/default/index.html
+/usr/share/doc/rust/html/core/default/macro.Default!.html
+/usr/share/doc/rust/html/core/default/macro.Default.html
 /usr/share/doc/rust/html/core/default/sidebar-items.js
 /usr/share/doc/rust/html/core/default/trait.Default.html
 /usr/share/doc/rust/html/core/f32/constant.DIGITS.html
@@ -14113,6 +14132,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/fmt/index.html
 /usr/share/doc/rust/html/core/fmt/macro.Debug!.html
 /usr/share/doc/rust/html/core/fmt/macro.Debug.html
+/usr/share/doc/rust/html/core/fmt/macros/macro.Debug!.html
+/usr/share/doc/rust/html/core/fmt/macros/macro.Debug.html
 /usr/share/doc/rust/html/core/fmt/sidebar-items.js
 /usr/share/doc/rust/html/core/fmt/struct.Arguments.html
 /usr/share/doc/rust/html/core/fmt/struct.DebugList.html
@@ -14154,6 +14175,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/hash/index.html
 /usr/share/doc/rust/html/core/hash/macro.Hash!.html
 /usr/share/doc/rust/html/core/hash/macro.Hash.html
+/usr/share/doc/rust/html/core/hash/macros/macro.Hash!.html
+/usr/share/doc/rust/html/core/hash/macros/macro.Hash.html
 /usr/share/doc/rust/html/core/hash/sidebar-items.js
 /usr/share/doc/rust/html/core/hash/sip/struct.SipHasher.html
 /usr/share/doc/rust/html/core/hash/struct.BuildHasherDefault.html
@@ -14333,7 +14356,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/intrinsics/fn.min_align_of_val.html
 /usr/share/doc/rust/html/core/intrinsics/fn.minnumf32.html
 /usr/share/doc/rust/html/core/intrinsics/fn.minnumf64.html
-/usr/share/doc/rust/html/core/intrinsics/fn.move_val_init.html
 /usr/share/doc/rust/html/core/intrinsics/fn.mul_with_overflow.html
 /usr/share/doc/rust/html/core/intrinsics/fn.nearbyintf32.html
 /usr/share/doc/rust/html/core/intrinsics/fn.nearbyintf64.html
@@ -14413,6 +14435,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/iter/adapters/fuse/struct.Fuse.html
 /usr/share/doc/rust/html/core/iter/adapters/inspect/struct.Inspect.html
 /usr/share/doc/rust/html/core/iter/adapters/intersperse/struct.Intersperse.html
+/usr/share/doc/rust/html/core/iter/adapters/intersperse/struct.IntersperseWith.html
 /usr/share/doc/rust/html/core/iter/adapters/map/struct.Map.html
 /usr/share/doc/rust/html/core/iter/adapters/map_while/struct.MapWhile.html
 /usr/share/doc/rust/html/core/iter/adapters/peekable/struct.Peekable.html
@@ -14463,6 +14486,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/iter/struct.Fuse.html
 /usr/share/doc/rust/html/core/iter/struct.Inspect.html
 /usr/share/doc/rust/html/core/iter/struct.Intersperse.html
+/usr/share/doc/rust/html/core/iter/struct.IntersperseWith.html
 /usr/share/doc/rust/html/core/iter/struct.Map.html
 /usr/share/doc/rust/html/core/iter/struct.MapWhile.html
 /usr/share/doc/rust/html/core/iter/struct.Once.html
@@ -14507,28 +14531,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/lazy/sidebar-items.js
 /usr/share/doc/rust/html/core/lazy/struct.Lazy.html
 /usr/share/doc/rust/html/core/lazy/struct.OnceCell.html
-/usr/share/doc/rust/html/core/macro.Clone!.html
-/usr/share/doc/rust/html/core/macro.Clone.html
-/usr/share/doc/rust/html/core/macro.Copy!.html
-/usr/share/doc/rust/html/core/macro.Copy.html
-/usr/share/doc/rust/html/core/macro.Debug!.html
-/usr/share/doc/rust/html/core/macro.Debug.html
-/usr/share/doc/rust/html/core/macro.Default!.html
-/usr/share/doc/rust/html/core/macro.Default.html
-/usr/share/doc/rust/html/core/macro.Eq!.html
-/usr/share/doc/rust/html/core/macro.Eq.html
-/usr/share/doc/rust/html/core/macro.Hash!.html
-/usr/share/doc/rust/html/core/macro.Hash.html
-/usr/share/doc/rust/html/core/macro.Ord!.html
-/usr/share/doc/rust/html/core/macro.Ord.html
-/usr/share/doc/rust/html/core/macro.PartialEq!.html
-/usr/share/doc/rust/html/core/macro.PartialEq.html
-/usr/share/doc/rust/html/core/macro.PartialOrd!.html
-/usr/share/doc/rust/html/core/macro.PartialOrd.html
-/usr/share/doc/rust/html/core/macro.RustcDecodable!.html
-/usr/share/doc/rust/html/core/macro.RustcDecodable.html
-/usr/share/doc/rust/html/core/macro.RustcEncodable!.html
-/usr/share/doc/rust/html/core/macro.RustcEncodable.html
 /usr/share/doc/rust/html/core/macro.asm!.html
 /usr/share/doc/rust/html/core/macro.asm.html
 /usr/share/doc/rust/html/core/macro.assert!.html
@@ -14537,12 +14539,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/macro.assert_eq.html
 /usr/share/doc/rust/html/core/macro.assert_ne!.html
 /usr/share/doc/rust/html/core/macro.assert_ne.html
-/usr/share/doc/rust/html/core/macro.bench!.html
-/usr/share/doc/rust/html/core/macro.bench.html
 /usr/share/doc/rust/html/core/macro.cfg!.html
 /usr/share/doc/rust/html/core/macro.cfg.html
-/usr/share/doc/rust/html/core/macro.cfg_accessible!.html
-/usr/share/doc/rust/html/core/macro.cfg_accessible.html
 /usr/share/doc/rust/html/core/macro.column!.html
 /usr/share/doc/rust/html/core/macro.column.html
 /usr/share/doc/rust/html/core/macro.compile_error!.html
@@ -14565,8 +14563,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/macro.format_args.html
 /usr/share/doc/rust/html/core/macro.format_args_nl!.html
 /usr/share/doc/rust/html/core/macro.format_args_nl.html
-/usr/share/doc/rust/html/core/macro.global_allocator!.html
-/usr/share/doc/rust/html/core/macro.global_allocator.html
 /usr/share/doc/rust/html/core/macro.global_asm!.html
 /usr/share/doc/rust/html/core/macro.global_asm.html
 /usr/share/doc/rust/html/core/macro.include!.html
@@ -14589,18 +14585,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/macro.option_env.html
 /usr/share/doc/rust/html/core/macro.panic!.html
 /usr/share/doc/rust/html/core/macro.panic.html
-/usr/share/doc/rust/html/core/macro.raw_const!.html
-/usr/share/doc/rust/html/core/macro.raw_const.html
-/usr/share/doc/rust/html/core/macro.raw_mut!.html
-/usr/share/doc/rust/html/core/macro.raw_mut.html
-/usr/share/doc/rust/html/core/macro.ready!.html
-/usr/share/doc/rust/html/core/macro.ready.html
 /usr/share/doc/rust/html/core/macro.stringify!.html
 /usr/share/doc/rust/html/core/macro.stringify.html
-/usr/share/doc/rust/html/core/macro.test!.html
-/usr/share/doc/rust/html/core/macro.test.html
-/usr/share/doc/rust/html/core/macro.test_case!.html
-/usr/share/doc/rust/html/core/macro.test_case.html
 /usr/share/doc/rust/html/core/macro.todo!.html
 /usr/share/doc/rust/html/core/macro.todo.html
 /usr/share/doc/rust/html/core/macro.trace_macros!.html
@@ -14616,6 +14602,8 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/macro.writeln!.html
 /usr/share/doc/rust/html/core/macro.writeln.html
 /usr/share/doc/rust/html/core/marker/index.html
+/usr/share/doc/rust/html/core/marker/macro.Copy!.html
+/usr/share/doc/rust/html/core/marker/macro.Copy.html
 /usr/share/doc/rust/html/core/marker/sidebar-items.js
 /usr/share/doc/rust/html/core/marker/struct.PhantomData.html
 /usr/share/doc/rust/html/core/marker/struct.PhantomPinned.html
@@ -14828,6 +14816,10 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/ptr/fn.write_unaligned.html
 /usr/share/doc/rust/html/core/ptr/fn.write_volatile.html
 /usr/share/doc/rust/html/core/ptr/index.html
+/usr/share/doc/rust/html/core/ptr/macro.raw_const!.html
+/usr/share/doc/rust/html/core/ptr/macro.raw_const.html
+/usr/share/doc/rust/html/core/ptr/macro.raw_mut!.html
+/usr/share/doc/rust/html/core/ptr/macro.raw_mut.html
 /usr/share/doc/rust/html/core/ptr/non_null/struct.NonNull.html
 /usr/share/doc/rust/html/core/ptr/sidebar-items.js
 /usr/share/doc/rust/html/core/ptr/struct.NonNull.html
@@ -14911,6 +14903,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/slice/struct.SplitNMut.html
 /usr/share/doc/rust/html/core/slice/struct.Windows.html
 /usr/share/doc/rust/html/core/slice/trait.SliceIndex.html
+/usr/share/doc/rust/html/core/slice/trait.SlicePattern.html
 /usr/share/doc/rust/html/core/str/converts/fn.from_utf8.html
 /usr/share/doc/rust/html/core/str/converts/fn.from_utf8_mut.html
 /usr/share/doc/rust/html/core/str/converts/fn.from_utf8_unchecked.html
@@ -15020,7 +15013,11 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/core/sync/sidebar-items.js
 /usr/share/doc/rust/html/core/task/enum.Poll.html
 /usr/share/doc/rust/html/core/task/index.html
+/usr/share/doc/rust/html/core/task/macro.ready!.html
+/usr/share/doc/rust/html/core/task/macro.ready.html
 /usr/share/doc/rust/html/core/task/poll/enum.Poll.html
+/usr/share/doc/rust/html/core/task/ready/macro.ready!.html
+/usr/share/doc/rust/html/core/task/ready/macro.ready.html
 /usr/share/doc/rust/html/core/task/sidebar-items.js
 /usr/share/doc/rust/html/core/task/struct.Context.html
 /usr/share/doc/rust/html/core/task/struct.RawWaker.html
@@ -15456,6 +15453,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/implementors/core/ops/unsize/trait.CoerceUnsized.js
 /usr/share/doc/rust/html/implementors/core/ops/unsize/trait.DispatchFromDyn.js
 /usr/share/doc/rust/html/implementors/core/slice/trait.SliceIndex.js
+/usr/share/doc/rust/html/implementors/core/slice/trait.SlicePattern.js
 /usr/share/doc/rust/html/implementors/core/str/pattern/trait.DoubleEndedSearcher.js
 /usr/share/doc/rust/html/implementors/core/str/pattern/trait.Pattern.js
 /usr/share/doc/rust/html/implementors/core/str/pattern/trait.ReverseSearcher.js
@@ -15616,6 +15614,12 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/nomicon/FontAwesome/fonts/fontawesome-webfont.woff2
 /usr/share/doc/rust/html/nomicon/aliasing.html
 /usr/share/doc/rust/html/nomicon/arc-and-mutex.html
+/usr/share/doc/rust/html/nomicon/arc-base.html
+/usr/share/doc/rust/html/nomicon/arc-clone.html
+/usr/share/doc/rust/html/nomicon/arc-drop.html
+/usr/share/doc/rust/html/nomicon/arc-final.html
+/usr/share/doc/rust/html/nomicon/arc-layout.html
+/usr/share/doc/rust/html/nomicon/arc.html
 /usr/share/doc/rust/html/nomicon/atomics.html
 /usr/share/doc/rust/html/nomicon/ayu-highlight.css
 /usr/share/doc/rust/html/nomicon/beneath-std.html
@@ -15848,6 +15852,11 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/reference/memory-allocation-and-lifetime.html
 /usr/share/doc/rust/html/reference/memory-model.html
 /usr/share/doc/rust/html/reference/memory-ownership.html
+/usr/share/doc/rust/html/reference/names.html
+/usr/share/doc/rust/html/reference/names/name-resolution.html
+/usr/share/doc/rust/html/reference/names/namespaces.html
+/usr/share/doc/rust/html/reference/names/preludes.html
+/usr/share/doc/rust/html/reference/names/scopes.html
 /usr/share/doc/rust/html/reference/notation.html
 /usr/share/doc/rust/html/reference/paths.html
 /usr/share/doc/rust/html/reference/patterns.html
@@ -16602,7 +16611,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/src/std/ffi/mod.rs.html
 /usr/share/doc/rust/html/src/std/ffi/os_str.rs.html
 /usr/share/doc/rust/html/src/std/fs.rs.html
-/usr/share/doc/rust/html/src/std/future.rs.html
 /usr/share/doc/rust/html/src/std/io/buffered/bufreader.rs.html
 /usr/share/doc/rust/html/src/std/io/buffered/bufwriter.rs.html
 /usr/share/doc/rust/html/src/std/io/buffered/linewriter.rs.html
@@ -17210,10 +17218,12 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/std/fs/struct.Permissions.html
 /usr/share/doc/rust/html/std/fs/struct.ReadDir.html
 /usr/share/doc/rust/html/std/future/fn.pending.html
+/usr/share/doc/rust/html/std/future/fn.poll_fn.html
 /usr/share/doc/rust/html/std/future/fn.ready.html
 /usr/share/doc/rust/html/std/future/index.html
 /usr/share/doc/rust/html/std/future/sidebar-items.js
 /usr/share/doc/rust/html/std/future/struct.Pending.html
+/usr/share/doc/rust/html/std/future/struct.PollFn.html
 /usr/share/doc/rust/html/std/future/struct.Ready.html
 /usr/share/doc/rust/html/std/future/trait.Future.html
 /usr/share/doc/rust/html/std/future/trait.IntoFuture.html
@@ -17399,7 +17409,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/std/intrinsics/fn.min_align_of_val.html
 /usr/share/doc/rust/html/std/intrinsics/fn.minnumf32.html
 /usr/share/doc/rust/html/std/intrinsics/fn.minnumf64.html
-/usr/share/doc/rust/html/std/intrinsics/fn.move_val_init.html
 /usr/share/doc/rust/html/std/intrinsics/fn.mul_with_overflow.html
 /usr/share/doc/rust/html/std/intrinsics/fn.nearbyintf32.html
 /usr/share/doc/rust/html/std/intrinsics/fn.nearbyintf64.html
@@ -17476,6 +17485,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/std/io/error/type.Result.html
 /usr/share/doc/rust/html/std/io/fn.copy.html
 /usr/share/doc/rust/html/std/io/fn.empty.html
+/usr/share/doc/rust/html/std/io/fn.read_to_string.html
 /usr/share/doc/rust/html/std/io/fn.repeat.html
 /usr/share/doc/rust/html/std/io/fn.sink.html
 /usr/share/doc/rust/html/std/io/fn.stderr.html
@@ -17555,6 +17565,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/std/iter/struct.Fuse.html
 /usr/share/doc/rust/html/std/iter/struct.Inspect.html
 /usr/share/doc/rust/html/std/iter/struct.Intersperse.html
+/usr/share/doc/rust/html/std/iter/struct.IntersperseWith.html
 /usr/share/doc/rust/html/std/iter/struct.Map.html
 /usr/share/doc/rust/html/std/iter/struct.MapWhile.html
 /usr/share/doc/rust/html/std/iter/struct.Once.html
@@ -18659,6 +18670,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/language-features/const-precise-live-drops.html
 /usr/share/doc/rust/html/unstable-book/language-features/const-raw-ptr-deref.html
 /usr/share/doc/rust/html/unstable-book/language-features/const-raw-ptr-to-usize-cast.html
+/usr/share/doc/rust/html/unstable-book/language-features/const-refs-to-cell.html
 /usr/share/doc/rust/html/unstable-book/language-features/const-trait-bound-opt-out.html
 /usr/share/doc/rust/html/unstable-book/language-features/const-trait-impl.html
 /usr/share/doc/rust/html/unstable-book/language-features/crate-visibility-modifier.html
@@ -18695,6 +18707,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/language-features/in-band-lifetimes.html
 /usr/share/doc/rust/html/unstable-book/language-features/infer-static-outlives-requirements.html
 /usr/share/doc/rust/html/unstable-book/language-features/inline-const.html
+/usr/share/doc/rust/html/unstable-book/language-features/intra-doc-pointers.html
 /usr/share/doc/rust/html/unstable-book/language-features/intrinsics.html
 /usr/share/doc/rust/html/unstable-book/language-features/isa-attribute.html
 /usr/share/doc/rust/html/unstable-book/language-features/label-break-value.html
@@ -18801,14 +18814,17 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/binary-heap-into-iter-sorted.html
 /usr/share/doc/rust/html/unstable-book/library-features/binary-heap-retain.html
 /usr/share/doc/rust/html/unstable-book/library-features/bool-to-option.html
+/usr/share/doc/rust/html/unstable-book/library-features/bound-as-ref.html
 /usr/share/doc/rust/html/unstable-book/library-features/bound-cloned.html
 /usr/share/doc/rust/html/unstable-book/library-features/box-into-boxed-slice.html
 /usr/share/doc/rust/html/unstable-book/library-features/box-into-pin.html
 /usr/share/doc/rust/html/unstable-book/library-features/btree-drain-filter.html
 /usr/share/doc/rust/html/unstable-book/library-features/btree-retain.html
 /usr/share/doc/rust/html/unstable-book/library-features/bufreader-seek-relative.html
+/usr/share/doc/rust/html/unstable-book/library-features/bufwriter-into-raw-parts.html
 /usr/share/doc/rust/html/unstable-book/library-features/c-void-variant.html
 /usr/share/doc/rust/html/unstable-book/library-features/can-vector.html
+/usr/share/doc/rust/html/unstable-book/library-features/cell-filter-map.html
 /usr/share/doc/rust/html/unstable-book/library-features/cell-leak.html
 /usr/share/doc/rust/html/unstable-book/library-features/cell-update.html
 /usr/share/doc/rust/html/unstable-book/library-features/cfg-accessible.html
@@ -18918,6 +18934,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/internal-output-capture.html
 /usr/share/doc/rust/html/unstable-book/library-features/into-future.html
 /usr/share/doc/rust/html/unstable-book/library-features/io-into-inner-error-parts.html
+/usr/share/doc/rust/html/unstable-book/library-features/io-read-to-string.html
 /usr/share/doc/rust/html/unstable-book/library-features/io-slice-advance.html
 /usr/share/doc/rust/html/unstable-book/library-features/ip.html
 /usr/share/doc/rust/html/unstable-book/library-features/is-sorted.html
@@ -18941,6 +18958,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/map-entry-replace.html
 /usr/share/doc/rust/html/unstable-book/library-features/map-first-last.html
 /usr/share/doc/rust/html/unstable-book/library-features/map-into-keys-values.html
+/usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-array-assume-init.html
 /usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-extra.html
 /usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-ref.html
 /usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-slice.html
@@ -18948,6 +18966,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/maybe-uninit-write-slice.html
 /usr/share/doc/rust/html/unstable-book/library-features/new-uninit.html
 /usr/share/doc/rust/html/unstable-book/library-features/nonnull-slice-from-raw-parts.html
+/usr/share/doc/rust/html/unstable-book/library-features/nonzero-is-power-of-two.html
 /usr/share/doc/rust/html/unstable-book/library-features/nonzero-leading-trailing-zeros.html
 /usr/share/doc/rust/html/unstable-book/library-features/num-as-ne-bytes.html
 /usr/share/doc/rust/html/unstable-book/library-features/once-cell.html
@@ -18955,12 +18974,12 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/option-expect-none.html
 /usr/share/doc/rust/html/unstable-book/library-features/option-insert.html
 /usr/share/doc/rust/html/unstable-book/library-features/option-result-contains.html
+/usr/share/doc/rust/html/unstable-book/library-features/option-result-unwrap-unchecked.html
 /usr/share/doc/rust/html/unstable-book/library-features/option-unwrap-none.html
 /usr/share/doc/rust/html/unstable-book/library-features/option-zip.html
 /usr/share/doc/rust/html/unstable-book/library-features/ordering-helpers.html
 /usr/share/doc/rust/html/unstable-book/library-features/osstring-ascii.html
 /usr/share/doc/rust/html/unstable-book/library-features/panic-abort.html
-/usr/share/doc/rust/html/unstable-book/library-features/panic-any.html
 /usr/share/doc/rust/html/unstable-book/library-features/panic-info-message.html
 /usr/share/doc/rust/html/unstable-book/library-features/panic-internals.html
 /usr/share/doc/rust/html/unstable-book/library-features/panic-unwind.html
@@ -18970,7 +18989,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/peekable-peek-mut.html
 /usr/share/doc/rust/html/unstable-book/library-features/peer-credentials-unix-socket.html
 /usr/share/doc/rust/html/unstable-book/library-features/pin-static-ref.html
-/usr/share/doc/rust/html/unstable-book/library-features/poll-map.html
 /usr/share/doc/rust/html/unstable-book/library-features/print-internals.html
 /usr/share/doc/rust/html/unstable-book/library-features/proc-macro-def-site.html
 /usr/share/doc/rust/html/unstable-book/library-features/proc-macro-diagnostic.html
@@ -18999,6 +19017,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/rt.html
 /usr/share/doc/rust/html/unstable-book/library-features/seek-convenience.html
 /usr/share/doc/rust/html/unstable-book/library-features/set-ptr-value.html
+/usr/share/doc/rust/html/unstable-book/library-features/setgroups.html
 /usr/share/doc/rust/html/unstable-book/library-features/sgx-platform.html
 /usr/share/doc/rust/html/unstable-book/library-features/shrink-to.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-as-chunks.html
@@ -19011,12 +19030,11 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/slice-iter-mut-as-slice.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-partition-at-index.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-partition-dedup.html
+/usr/share/doc/rust/html/unstable-book/library-features/slice-pattern.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-ptr-get.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-ptr-len.html
 /usr/share/doc/rust/html/unstable-book/library-features/slice-split-at-unchecked.html
-/usr/share/doc/rust/html/unstable-book/library-features/slice-strip.html
 /usr/share/doc/rust/html/unstable-book/library-features/sort-internals.html
-/usr/share/doc/rust/html/unstable-book/library-features/split-inclusive.html
 /usr/share/doc/rust/html/unstable-book/library-features/std-internals.html
 /usr/share/doc/rust/html/unstable-book/library-features/stdsimd.html
 /usr/share/doc/rust/html/unstable-book/library-features/step-trait-ext.html
@@ -19042,6 +19060,7 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/type-name-of-val.html
 /usr/share/doc/rust/html/unstable-book/library-features/unchecked-math.html
 /usr/share/doc/rust/html/unstable-book/library-features/unicode-internals.html
+/usr/share/doc/rust/html/unstable-book/library-features/unix-process-wait-more.html
 /usr/share/doc/rust/html/unstable-book/library-features/unix-socket-ancillary-data.html
 /usr/share/doc/rust/html/unstable-book/library-features/unix-socket-peek.html
 /usr/share/doc/rust/html/unstable-book/library-features/unsafe-cell-raw-get.html
@@ -19051,7 +19070,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/share/doc/rust/html/unstable-book/library-features/update-panic-count.html
 /usr/share/doc/rust/html/unstable-book/library-features/variant-count.html
 /usr/share/doc/rust/html/unstable-book/library-features/vec-into-raw-parts.html
-/usr/share/doc/rust/html/unstable-book/library-features/vec-remove-item.html
 /usr/share/doc/rust/html/unstable-book/library-features/vec-spare-capacity.html
 /usr/share/doc/rust/html/unstable-book/library-features/vecdeque-binary-search.html
 /usr/share/doc/rust/html/unstable-book/library-features/wake-trait.html
