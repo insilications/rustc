@@ -24,6 +24,11 @@ export MAKEFLAGS=%{?_smp_mflags}
 # export CCACHE_SLOPPINESS=pch_defines,locale,time_macros
 # export CCACHE_DISABLE=1
 #
-%global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
+#global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
+#global __provides_exclude ^(%{_privatelibs})$
+#global __requires_exclude ^(%{_privatelibs})$
+%global _privatelibs lib(.*-[[:xdigit:]]{16}*|rustc.*)[.]so.*
 %global __provides_exclude ^(%{_privatelibs})$
 %global __requires_exclude ^(%{_privatelibs})$
+%global __provides_exclude_from ^(%{_docdir}|%{rustlibdir}/src)/.*$
+%global __requires_exclude_from ^(%{_docdir}|%{rustlibdir}/src)/.*$
