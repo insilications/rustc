@@ -6,7 +6,10 @@ install -m0644  %{buildroot}/usr/etc/bash_completion.d/cargo %{buildroot}/usr/sh
 rm -rf %{buildroot}/usr/etc/bash_completion.d/cargo
 #
 find %{?buildroot:%{buildroot}} -name "install.log" -exec rm {} \;
-find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-[0-9]*\.unknown\.gnu-[0-9]*\.x86_64//g' {} \;
+# find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-[0-9]*\.unknown\.gnu-[0-9]*\.x86_64//g' {} \;
+#find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-(\d+)(\.\d+)*-[0-9]*\.x86_64//g' {} \;
 #pushd %{?buildroot:%{buildroot}}
 #rg -e "/builddir/build/BUILDROOT/"
 #popd
+#rustc-1.54.0-90.x86_64
+find %{buildroot}/usr/lib/rustlib/ -maxdepth 1 -type f -exec rm -v '{}' '+'

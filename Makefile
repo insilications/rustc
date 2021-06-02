@@ -1,5 +1,5 @@
 PKG_NAME := rustc
-URL = https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
+URL = file:///aot/build/clearlinux/packages/rustc/rust-1.54.0.tar.gz
 ARCHIVES = 
 ARCHIVES_GIT = 
 

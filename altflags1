@@ -30,5 +30,5 @@ export MAKEFLAGS=%{?_smp_mflags}
 %global _privatelibs lib(.*-[[:xdigit:]]{16}*|rustc.*)[.]so.*
 %global __provides_exclude ^(%{_privatelibs})$
 %global __requires_exclude ^(%{_privatelibs})$
-%global __provides_exclude_from ^(%{_docdir}|%{rustlibdir}/src)/.*$
-%global __requires_exclude_from ^(%{_docdir}|%{rustlibdir}/src)/.*$
+%global __provides_exclude_from ^(%{_docdir}|/usr/rustlib/src)/.*$
+%global __requires_exclude_from ^(%{_docdir}|/usr/rustlib/src)/.*$

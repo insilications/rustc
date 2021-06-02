@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : rustc
-Version  : 64.unknown.gnu
-Release  : 89
-URL      : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
-Source0  : https://static.rust-lang.org/dist/rust-nightly-x86_64-unknown-linux-gnu.tar.gz
+Version  : 1.54.0
+Release  : 90
+URL      : file:///aot/build/clearlinux/packages/rustc/rust-1.54.0.tar.gz
+Source0  : file:///aot/build/clearlinux/packages/rustc/rust-1.54.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0 GPL-2.0
@@ -123,7 +123,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622615293
+export SOURCE_DATE_EPOCH=1622623749
 export GCC_IGNORE_WERROR=1
 ## altflags1 content
 export CFLAGS="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC"
@@ -152,9 +152,14 @@ export MAKEFLAGS=%{?_smp_mflags}
 # export CCACHE_SLOPPINESS=pch_defines,locale,time_macros
 # export CCACHE_DISABLE=1
 #
-%global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
+#global _privatelibs lib.*-[[:xdigit:]]*[.]so.*
+#global __provides_exclude ^(%{_privatelibs})$
+#global __requires_exclude ^(%{_privatelibs})$
+%global _privatelibs lib(.*-[[:xdigit:]]{16}*|rustc.*)[.]so.*
 %global __provides_exclude ^(%{_privatelibs})$
 %global __requires_exclude ^(%{_privatelibs})$
+%global __provides_exclude_from ^(%{_docdir}|/usr/rustlib/src)/.*$
+%global __requires_exclude_from ^(%{_docdir}|/usr/rustlib/src)/.*$
 ## altflags1 end
 ## make_macro content
 echo "Installing..."
@@ -163,20 +168,24 @@ echo "Installing..."
 
 
 %install
-export SOURCE_DATE_EPOCH=1622615293
+export SOURCE_DATE_EPOCH=1622623749
 rm -rf %{buildroot}
 ## install_macro start
 ./install.sh --prefix=%{?buildroot:%{buildroot}}/usr/ --libdir=%{?buildroot:%{buildroot}}/usr/lib/ --disable-ldconfig --without=rust-docs --verbose
+#./install.sh --destdir=%{?buildroot:%{buildroot}} --prefix=/usr/ --libdir=/usr/lib/ --disable-ldconfig --without=rust-docs --verbose
 # shell completion for bash
 install -dm 0755 %{buildroot}/usr/share/bash-completion/completions
 install -m0644  %{buildroot}/usr/etc/bash_completion.d/cargo %{buildroot}/usr/share/bash-completion/completions/cargo
 rm -rf %{buildroot}/usr/etc/bash_completion.d/cargo
 #
 find %{?buildroot:%{buildroot}} -name "install.log" -exec rm {} \;
-find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-[0-9]*\.unknown\.gnu-[0-9]*\.x86_64//g' {} \;
+# find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-[0-9]*\.unknown\.gnu-[0-9]*\.x86_64//g' {} \;
+#find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/builddir\/build\/BUILDROOT\/rustc-(\d+)(\.\d+)*-[0-9]*\.x86_64//g' {} \;
 #pushd %{?buildroot:%{buildroot}}
 #rg -e "/builddir/build/BUILDROOT/"
 #popd
+#rustc-1.54.0-90.x86_64
+find %{buildroot}/usr/lib/rustlib/ -maxdepth 1 -type f -exec rm -v '{}' '+'
 ## install_macro end
 
 %files
@@ -225,7 +234,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/lib/librustc_driver-f0cc9de4b9df9abc.so
 /usr/lib/libstd-d3e6744d0f396e66.so
 /usr/lib/libtest-7a39810ff79f839d.so
-/usr/lib/rustlib/components
 /usr/lib/rustlib/etc/gdb_load_rust_pretty_printers.py
 /usr/lib/rustlib/etc/gdb_lookup.py
 /usr/lib/rustlib/etc/gdb_providers.py
@@ -233,18 +241,6 @@ find %{?buildroot:%{buildroot}} -type f -name '*manifest-*' -exec sed -i 's/\/bu
 /usr/lib/rustlib/etc/lldb_lookup.py
 /usr/lib/rustlib/etc/lldb_providers.py
 /usr/lib/rustlib/etc/rust_types.py
-/usr/lib/rustlib/manifest-cargo
-/usr/lib/rustlib/manifest-clippy-preview
-/usr/lib/rustlib/manifest-llvm-tools-preview
-/usr/lib/rustlib/manifest-miri-preview
-/usr/lib/rustlib/manifest-rust-analysis-x86_64-unknown-linux-gnu
-/usr/lib/rustlib/manifest-rust-analyzer-preview
-/usr/lib/rustlib/manifest-rust-demangler-preview
-/usr/lib/rustlib/manifest-rust-std-x86_64-unknown-linux-gnu
-/usr/lib/rustlib/manifest-rustc
-/usr/lib/rustlib/manifest-rustfmt-preview
-/usr/lib/rustlib/rust-installer-version
-/usr/lib/rustlib/uninstall.sh
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libaddr2line-f99e7382840549d7.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/libadler-d7fdb8a364254f09.json
 /usr/lib/rustlib/x86_64-unknown-linux-gnu/analysis/liballoc-e6deb9eb350bb778.json
