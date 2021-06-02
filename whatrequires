@@ -1,6 +1,5 @@
 # This file contains recursive sources that require this package
 firecracker
 librsvg
-mozjs68
 mozjs78
 suricata
